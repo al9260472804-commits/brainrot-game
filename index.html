@@ -43,5 +43,30 @@
     <h3>🏆 ДОСТИЖЕНИЯ</h3>
     <div class="achievements-grid" id="achievements-grid"></div>
 </div>
+    <button onclick="openShop()">🛒 Магазин</button>
+
+<div id="shop-modal" class="modal">
+    <div class="modal-content">
+        <h2>🛒 МАГАЗИН</h2>
+        <p>💰 Голда: <span id="gold-amount">0</span></p>
+        
+        <div class="shop-items">
+            <div class="shop-item" onclick="buyItem('energy', 50)">
+                <div>⚡ 50 энергии</div>
+                <div class="price">25💰</div>
+            </div>
+            <div class="shop-item" onclick="buyItem('case', 100)">
+                <div>🎁 Случайная карта</div>
+                <div class="price">100💰</div>
+            </div>
+            <div class="shop-item" onclick="buyItem('boost', 200)">
+                <div>🔥 x2 рейтинг на 1 час</div>
+                <div class="price">200💰</div>
+            </div>
+        </div>
+        
+        <button onclick="closeShop()">Закрыть</button>
+    </div>
+</div>
 </body>
 </html>
