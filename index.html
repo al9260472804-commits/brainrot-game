@@ -39,6 +39,29 @@
     <button onclick="dailyReward()">🎁 Ежедневная награда (+50⚡)</button>
     <button onclick="inviteFriend()">👥 Пригласить друга (+100⚡)</button>
 </div>
+    <!-- Кнопки заработка -->
+<div class="energy-actions" style="margin: 20px 0; text-align: center;">
+    <button onclick="watchAdForEnergy()" style="background: #4CAF50; color: white; border: none; padding: 12px 20px; margin: 5px; border-radius: 10px; cursor: pointer;">
+        📺 Реклама (+20⚡)
+    </button>
+    <button onclick="dailyReward()" style="background: #FF9800; color: white; border: none; padding: 12px 20px; margin: 5px; border-radius: 10px; cursor: pointer;">
+        🎁 Ежедневная награда
+    </button>
+    <button onclick="openShop()" style="background: #2196F3; color: white; border: none; padding: 12px 20px; margin: 5px; border-radius: 10px; cursor: pointer;">
+        🛒 Магазин
+    </button>
+</div>
+
+<!-- Достижения -->
+<div class="achievements" style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 20px; margin: 20px 0;">
+    <h3 style="color: #ffd700; text-align: center;">🏆 ДОСТИЖЕНИЯ</h3>
+    <div class="achievements-grid" id="achievements-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;"></div>
+</div>
+
+<!-- Статистика -->
+<div style="text-align: center; margin: 15px 0; font-size: 18px;">
+    💰 Голда: <span id="gold">0</span>
+</div>
     <div class="achievements">
     <h3>🏆 ДОСТИЖЕНИЯ</h3>
     <div class="achievements-grid" id="achievements-grid"></div>
