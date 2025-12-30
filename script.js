@@ -170,3 +170,89 @@ function inviteFriend() {
     prompt('Отправь эту ссылку другу:', link);
     showNotification('Когда друг зайдет по ссылке, получишь +100⚡');
 }
+// Система достижений
+const achievements = [
+    { id: 1, icon: "🎮", name: "Новичок", desc: "Украсть первую карту", condition: () => cards.length >= 1, reward: 50 },
+    { id: 2, icon: "🏆", name: "Коллекционер", desc: "Собрать 5 карт", condition: () => cards.length >= 5, reward: 100 },
+    { id: 3, icon: "⚡", name: "Энерджайзер", desc: "Потратить 100 энергии", condition: () => totalEnergySpent >= 100, reward: 75 },
+    { id: 4, icon: "👑", name: "Чемпион", desc: "Достичь 5000 рейтинга", condition: () => rating >= 5000, reward: 200 },
+    { id: 5, icon: "💰", name: "Богач", desc: "Заработать 1000 голды", condition: () => gold >= 1000, reward: 300 }
+];
+
+let unlockedAchievements = [];
+let totalEnergySpent = 0;
+let gold = 0;
+
+function updateAchievements() {
+    const grid = document.getElementById('achievements-grid');
+    grid.innerHTML = '';
+    
+    achievements.forEach(ach => {
+        const isUnlocked = ach.condition();
+        const div = document.createElement('div');
+        div.className = `achievement ${isUnlocked ? 'unlocked' : ''}`;
+        div.innerHTML = `
+            <div style="font-size:24px">${ach.icon}</div>
+            <div style="font-weight:bold">${ach.name}</div>
+            <div style="font-size:12px">${ach.desc}</div>
+        `;
+        grid.appendChild(div);
+        
+        // Награда за новое достижение
+        if (isUnlocked && !unlockedAchievements.includes(ach.id)) {
+            unlockedAchievements.push(ach.id);
+            gold += ach.reward;
+            showNotification(`🏆 Достижение "${ach.name}"! +${ach.reward}💰`);
+        }
+    });
+}
+
+// В функции stealCard() добавь:
+function stealCard() {
+    // ... существующий код ...
+    totalEnergySpent += currentCard.cost; // Добавить эту строку
+    updateAchievements(); // Добавить эту строку
+}
+// Магазин
+function openShop() {
+    document.getElementById('shop-modal').style.display = 'block';
+    document.getElementById('gold-amount').textContent = gold;
+}
+
+function closeShop() {
+    document.getElementById('shop-modal').style.display = 'none';
+}
+
+function buyItem(type, price) {
+    if (gold < price) {
+        showNotification('❌ Недостаточно голды!');
+        return;
+    }
+    
+    gold -= price;
+    
+    switch(type) {
+        case 'energy':
+            energy += 50;
+            if (energy > 100) energy = 100;
+            showNotification('✅ Куплено 50⚡!');
+            break;
+        case 'case':
+            const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
+            if (!cards.includes(randomCard.id)) {
+                cards.push(randomCard.id);
+                showNotification(`🎁 Получена карта: ${randomCard.title}!`);
+            } else {
+                gold += 30; // Компенсация
+                showNotification('🎁 Карта уже есть! +30💰');
+            }
+            break;
+        case 'boost':
+            // Активируем буст на 1 час
+            showNotification('🔥 Буст активирован! x2 рейтинг на 1 час!');
+            break;
+    }
+    
+    updateUI();
+    closeShop();
+}
