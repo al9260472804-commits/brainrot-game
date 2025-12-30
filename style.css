@@ -87,3 +87,28 @@ h1 {
     object-fit: cover;
     border-radius: 8px;
 }
+.achievements {
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.achievement {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.achievement.unlocked {
+    background: rgba(0,255,136,0.2);
+    border: 2px solid #00ff88;
+}
