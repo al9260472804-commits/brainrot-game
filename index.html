@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BRAINROT STEALER</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=500, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="game">
+        <h1>🎮 BRAINROT STEALER</h1>
+        
+        <div class="stats">
+            <div>⚡ <span id="energy">100</span></div>
+            <div>🏆 <span id="cards">0</span></div>
+            <div>⭐ <span id="rating">1000</span></div>
+        </div>
+        
+        <div class="card">
+            <h2 id="card-title">SKIBIDI TOILET</h2>
+            <p id="card-desc">Легендарный туалет-голова</p>
+            <img src="https://i.imgur.com/xK9T4hG.png" id="card-image">
+            
+            <button id="steal-btn" onclick="stealCard()">
+                УКРАСТЬ КАРТУ
+            </button>
+            
+            <p>Цена: ⚡ <span id="cost">15</span> энергии</p>
+        </div>
+        
+        <div class="collection">
+            <h3>📚 МОИ КАРТЫ</h3>
+            <div id="inventory"></div>
+        </div>
+    </div>
+</body>
+</html>
