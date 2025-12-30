@@ -139,3 +139,34 @@ const allCards = [
         image: "https://i.imgur.com/ТВОЙ_КОД3.png"
     }
 ];
+// Заработок энергии
+function watchAdForEnergy() {
+    if (confirm('Посмотреть рекламу 30 секунд за +20 энергии?')) {
+        // Тут можно подключить рекламную сеть
+        energy += 20;
+        if (energy > 100) energy = 100;
+        updateUI();
+        showNotification('+20⚡ за просмотр рекламы!');
+    }
+}
+
+function dailyReward() {
+    const lastReward = localStorage.getItem('lastRewardDate');
+    const today = new Date().toDateString();
+    
+    if (lastReward !== today) {
+        energy += 50;
+        if (energy > 100) energy = 100;
+        localStorage.setItem('lastRewardDate', today);
+        updateUI();
+        showNotification('🎁 Ежедневная награда: +50⚡!');
+    } else {
+        showNotification('❌ Уже получал награду сегодня!');
+    }
+}
+
+function inviteFriend() {
+    const link = `https://t.me/твой_бот?start=ref_${Date.now()}`;
+    prompt('Отправь эту ссылку другу:', link);
+    showNotification('Когда друг зайдет по ссылке, получишь +100⚡');
+}
