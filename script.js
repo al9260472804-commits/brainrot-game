@@ -113,3 +113,29 @@ window.onload = function() {
     loadGame();
     updateCard();
 };
+const allCards = [
+    // Старые карточки...
+    
+    // Новые карточки:
+    {
+        id: 6,
+        title: "RIZZLER",
+        desc: "Ultimate rizz god",
+        cost: 20,
+        image: "https://i.imgur.com/ТВОЙ_КОД1.png"
+    },
+    {
+        id: 7,
+        title: "SIGMA GRINDSET",
+        desc: "Wake up at 4AM",
+        cost: 18,
+        image: "https://i.imgur.com/ТВОЙ_КОД2.png"
+    },
+    {
+        id: 8,
+        title: "WHAT THE DOG DOIN",
+        desc: "Собака делает что-то странное",
+        cost: 12,
+        image: "https://i.imgur.com/ТВОЙ_КОД3.png"
+    }
+];
