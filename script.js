@@ -256,3 +256,38 @@ function buyItem(type, price) {
     updateUI();
     closeShop();
 }
+const API_URL = "http://localhost:8000"; // Или твой хостинг
+
+// Отправка данных на сервер
+async function saveToServer() {
+    const userData = {
+        user_id: 123, // Получить из Telegram
+        username: gameData.username,
+        energy: gameData.energy,
+        cards: gameData.cards,
+        rating: gameData.rating,
+        gold: gold
+    };
+    
+    try {
+        const response = await fetch(`${API_URL}/save`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        });
+        console.log('Данные сохранены на сервере');
+    } catch (error) {
+        console.error('Ошибка сохранения:', error);
+    }
+}
+
+// Загрузка лидерборда
+async function loadLeaderboard() {
+    try {
+        const response = await fetch(`${API_URL}/leaderboard`);
+        const leaderboard = await response.json();
+        console.log('Лидерборд:', leaderboard);
+    } catch (error) {
+        console.error('Ошибка загрузки лидерборда:', error);
+    }
+}
