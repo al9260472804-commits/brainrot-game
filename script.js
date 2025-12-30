@@ -1,7 +1,9 @@
-// Игра Brainrot Stealer
+// Brainrot Stealer - РАБОЧАЯ ВЕРСИЯ
 let energy = 100;
 let cards = [];
 let rating = 1000;
+let gold = 0;
+let unlockedAchievements = [];
 
 const allCards = [
     { id: 1, title: "SKIBIDI TOILET", desc: "Легендарный туалет-голова", cost: 15, image: "https://i.imgur.com/xK9T4hG.png" },
@@ -11,138 +13,187 @@ const allCards = [
 
 let currentCard = allCards[0];
 
-// Загрузка сохранения
+// Достижения
+const achievements = [
+    { id: 1, icon: "🎮", name: "Новичок", desc: "Украсть первую карту", condition: () => cards.length >= 1, reward: 50 },
+    { id: 2, icon: "🏆", name: "Коллекционер", desc: "Собрать 3 карты", condition: () => cards.length >= 3, reward: 100 },
+    { id: 3, icon: "⚡", name: "Энергия", desc: "Потратить 50 энергии", condition: () => totalEnergySpent >= 50, reward: 75 }
+];
+
+let totalEnergySpent = 0;
+
+// ========== БАЗОВЫЕ ФУНКЦИИ ==========
+
+// Загрузка игры
 function loadGame() {
-    const saved = localStorage.getItem('brainrot');
+    const saved = localStorage.getItem('brainrot_save');
     if (saved) {
-        const data = JSON.parse(saved);
-        energy = data.energy || 100;
-        cards = data.cards || [];
-        rating = data.rating || 1000;
+        try {
+            const data = JSON.parse(saved);
+            energy = data.energy || 100;
+            cards = data.cards || [];
+            rating = data.rating || 1000;
+            gold = data.gold || 0;
+            unlockedAchievements = data.achievements || [];
+            totalEnergySpent = data.totalEnergySpent || 0;
+        } catch (e) {
+            console.log('Ошибка загрузки, начинаем заново');
+        }
     }
     updateUI();
+    updateAchievements();
 }
 
 // Сохранение игры
 function saveGame() {
-    const data = { energy, cards, rating };
-    localStorage.setItem('brainrot', JSON.stringify(data));
+    const data = {
+        energy,
+        cards,
+        rating,
+        gold,
+        achievements: unlockedAchievements,
+        totalEnergySpent
+    };
+    localStorage.setItem('brainrot_save', JSON.stringify(data));
 }
 
 // Обновление интерфейса
 function updateUI() {
     document.getElementById('energy').textContent = energy;
-    document.getElementById('cards').textContent = cards.length;
+    document.getElementById('cards-count').textContent = cards.length;
     document.getElementById('rating').textContent = rating;
+    document.getElementById('gold').textContent = gold;
     
-    // Инвентарь
-    const inventory = document.getElementById('inventory');
-    inventory.innerHTML = '';
+    // Обновляем коллекцию
+    updateCollection();
     
-    if (cards.length === 0) {
-        inventory.innerHTML = '<p style="color:#aaa; grid-column:1/4">Нет карт</p>';
-    } else {
-        cards.slice(-6).reverse().forEach(cardId => {
-            const card = allCards.find(c => c.id === cardId);
-            if (card) {
-                const div = document.createElement('div');
-                div.className = 'card-small';
-                div.innerHTML = `<img src="${card.image}"><div>${card.title}</div>`;
-                inventory.appendChild(div);
-            }
-        });
-    }
-    
+    // Сохраняем игру
     saveGame();
 }
 
-// Кража карты
-function stealCard() {
-    if (energy < currentCard.cost) {
-        alert('⚡ Нет энергии!');
+// Обновление коллекции
+function updateCollection() {
+    const grid = document.getElementById('collection');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    
+    if (cards.length === 0) {
+        grid.innerHTML = '<p style="color:#aaa; text-align:center; grid-column:1/4; padding:30px;">Нет карт</p>';
         return;
     }
     
-    energy -= currentCard.cost;
-    
-    // Эффект кнопки
-    const btn = document.getElementById('steal-btn');
-    btn.style.transform = 'scale(0.95)';
-    setTimeout(() => btn.style.transform = 'scale(1)', 200);
-    
-    // Шанс 70%
-    if (Math.random() < 0.7) {
-        if (!cards.includes(currentCard.id)) {
-            cards.push(currentCard.id);
-            rating += 50;
-            alert('🎉 УКРАЛ! ' + currentCard.title + ' (+50⭐)');
-        } else {
-            rating += 10;
-            alert('✅ Уже есть! (+10⭐)');
+    // Показываем последние 6 карт
+    cards.slice(-6).reverse().forEach(cardId => {
+        const card = allCards.find(c => c.id === cardId);
+        if (card) {
+            const div = document.createElement('div');
+            div.className = 'card-small';
+            div.innerHTML = `
+                <img src="${card.image}" style="width:100%; height:80px; object-fit:cover; border-radius:8px;">
+                <div style="font-size:12px; margin-top:5px;">${card.title}</div>
+            `;
+            grid.appendChild(div);
         }
-        
-        // Новая карта
-        currentCard = allCards[Math.floor(Math.random() * allCards.length)];
-        updateCard();
-        
-    } else {
-        alert('❌ Не удалось!');
-    }
-    
-    updateUI();
+    });
+}
+
+// Показать уведомление
+function showNotification(text) {
+    alert(text); // Простой alert вместо сложной системы
 }
 
 // Обновление карты
 function updateCard() {
     document.getElementById('card-title').textContent = currentCard.title;
     document.getElementById('card-desc').textContent = currentCard.desc;
-    document.getElementById('cost').textContent = currentCard.cost;
+    document.getElementById('card-cost').textContent = currentCard.cost;
     document.getElementById('card-image').src = currentCard.image;
 }
 
-// Восстановление энергии
-setInterval(() => {
-    if (energy < 100) {
-        energy++;
-        updateUI();
-    }
-}, 60000);
-
-// Запуск игры
-window.onload = function() {
-    loadGame();
-    updateCard();
-};
-const allCards = [
-    // Старые карточки...
+// ========== ГЛАВНАЯ ФУНКЦИЯ - КРАЖА КАРТЫ ==========
+function stealCard() {
+    console.log('Кража карты...');
     
-    // Новые карточки:
-    {
-        id: 6,
-        title: "RIZZLER",
-        desc: "Ultimate rizz god",
-        cost: 20,
-        image: "https://i.imgur.com/ТВОЙ_КОД1.png"
-    },
-    {
-        id: 7,
-        title: "SIGMA GRINDSET",
-        desc: "Wake up at 4AM",
-        cost: 18,
-        image: "https://i.imgur.com/ТВОЙ_КОД2.png"
-    },
-    {
-        id: 8,
-        title: "WHAT THE DOG DOIN",
-        desc: "Собака делает что-то странное",
-        cost: 12,
-        image: "https://i.imgur.com/ТВОЙ_КОД3.png"
+    // Проверка энергии
+    if (energy < currentCard.cost) {
+        showNotification('⚡ Нет энергии!');
+        return;
     }
-];
-// Заработок энергии
+    
+    // Тратим энергию
+    energy -= currentCard.cost;
+    totalEnergySpent += currentCard.cost;
+    
+    // Эффект кнопки
+    const btn = document.getElementById('steal-btn');
+    btn.style.transform = 'scale(0.95)';
+    setTimeout(() => btn.style.transform = 'scale(1)', 200);
+    
+    // Шанс успеха 70%
+    if (Math.random() < 0.7) {
+        if (!cards.includes(currentCard.id)) {
+            // Новая карта
+            cards.push(currentCard.id);
+            rating += 50;
+            gold += 10; // Немного голды за новую карту
+            showNotification(`🎉 УКРАЛ! ${currentCard.title} (+50⭐ +10💰)`);
+        } else {
+            // Карта уже есть
+            rating += 10;
+            gold += 5;
+            showNotification(`✅ Уже есть! (+10⭐ +5💰)`);
+        }
+        
+        // Новая карта через секунду
+        setTimeout(() => {
+            currentCard = allCards[Math.floor(Math.random() * allCards.length)];
+            updateCard();
+        }, 1000);
+        
+    } else {
+        // Неудача
+        showNotification('❌ Не удалось украсть!');
+    }
+    
+    // Обновляем всё
+    updateUI();
+    updateAchievements();
+}
+
+// ========== НОВЫЕ ФУНКЦИИ ==========
+
+// Обновление достижений
+function updateAchievements() {
+    const grid = document.getElementById('achievements-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    
+    achievements.forEach(ach => {
+        const isUnlocked = ach.condition();
+        const isNew = isUnlocked && !unlockedAchievements.includes(ach.id);
+        
+        if (isNew) {
+            unlockedAchievements.push(ach.id);
+            gold += ach.reward;
+            showNotification(`🏆 Достижение "${ach.name}"! +${ach.reward}💰`);
+        }
+        
+        const div = document.createElement('div');
+        div.className = 'achievement' + (isUnlocked ? ' unlocked' : '');
+        div.innerHTML = `
+            <div style="font-size:24px">${ach.icon}</div>
+            <div style="font-weight:bold; font-size:14px">${ach.name}</div>
+            <div style="font-size:10px">${ach.desc}</div>
+        `;
+        grid.appendChild(div);
+    });
+}
+
+// Заработок энергии (простые функции)
 function watchAdForEnergy() {
     if (confirm('Посмотреть рекламу 30 секунд за +20 энергии?')) {
-        // Тут можно подключить рекламную сеть
         energy += 20;
         if (energy > 100) energy = 100;
         updateUI();
@@ -151,143 +202,137 @@ function watchAdForEnergy() {
 }
 
 function dailyReward() {
-    const lastReward = localStorage.getItem('lastRewardDate');
     const today = new Date().toDateString();
+    const lastReward = localStorage.getItem('lastReward');
     
     if (lastReward !== today) {
         energy += 50;
+        gold += 25;
         if (energy > 100) energy = 100;
-        localStorage.setItem('lastRewardDate', today);
+        localStorage.setItem('lastReward', today);
         updateUI();
-        showNotification('🎁 Ежедневная награда: +50⚡!');
+        showNotification('🎁 Ежедневная награда: +50⚡ +25💰!');
     } else {
         showNotification('❌ Уже получал награду сегодня!');
     }
 }
 
-function inviteFriend() {
-    const link = `https://t.me/твой_бот?start=ref_${Date.now()}`;
-    prompt('Отправь эту ссылку другу:', link);
-    showNotification('Когда друг зайдет по ссылке, получишь +100⚡');
-}
-// Система достижений
-const achievements = [
-    { id: 1, icon: "🎮", name: "Новичок", desc: "Украсть первую карту", condition: () => cards.length >= 1, reward: 50 },
-    { id: 2, icon: "🏆", name: "Коллекционер", desc: "Собрать 5 карт", condition: () => cards.length >= 5, reward: 100 },
-    { id: 3, icon: "⚡", name: "Энерджайзер", desc: "Потратить 100 энергии", condition: () => totalEnergySpent >= 100, reward: 75 },
-    { id: 4, icon: "👑", name: "Чемпион", desc: "Достичь 5000 рейтинга", condition: () => rating >= 5000, reward: 200 },
-    { id: 5, icon: "💰", name: "Богач", desc: "Заработать 1000 голды", condition: () => gold >= 1000, reward: 300 }
-];
-
-let unlockedAchievements = [];
-let totalEnergySpent = 0;
-let gold = 0;
-
-function updateAchievements() {
-    const grid = document.getElementById('achievements-grid');
-    grid.innerHTML = '';
-    
-    achievements.forEach(ach => {
-        const isUnlocked = ach.condition();
-        const div = document.createElement('div');
-        div.className = `achievement ${isUnlocked ? 'unlocked' : ''}`;
-        div.innerHTML = `
-            <div style="font-size:24px">${ach.icon}</div>
-            <div style="font-weight:bold">${ach.name}</div>
-            <div style="font-size:12px">${ach.desc}</div>
-        `;
-        grid.appendChild(div);
-        
-        // Награда за новое достижение
-        if (isUnlocked && !unlockedAchievements.includes(ach.id)) {
-            unlockedAchievements.push(ach.id);
-            gold += ach.reward;
-            showNotification(`🏆 Достижение "${ach.name}"! +${ach.reward}💰`);
-        }
-    });
-}
-
-// В функции stealCard() добавь:
-function stealCard() {
-    // ... существующий код ...
-    totalEnergySpent += currentCard.cost; // Добавить эту строку
-    updateAchievements(); // Добавить эту строку
-}
-// Магазин
+// Магазин (упрощенный)
 function openShop() {
-    document.getElementById('shop-modal').style.display = 'block';
-    document.getElementById('gold-amount').textContent = gold;
+    const shopHTML = `
+        <div style="background:rgba(0,0,0,0.9); position:fixed; top:0; left:0; width:100%; height:100%; z-index:1000; display:flex; align-items:center; justify-content:center;">
+            <div style="background:#1a1a2e; padding:30px; border-radius:20px; border:3px solid #00ff88; max-width:400px; width:90%;">
+                <h2 style="color:#00ff88; text-align:center;">🛒 МАГАЗИН</h2>
+                <p style="text-align:center; font-size:20px;">💰 Голда: ${gold}</p>
+                
+                <div style="margin:20px 0;">
+                    <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin:10px 0; cursor:pointer;" onclick="buyEnergy()">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>⚡ 50 энергии</span>
+                            <span style="color:#ffd700;">25💰</span>
+                        </div>
+                    </div>
+                    
+                    <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin:10px 0; cursor:pointer;" onclick="buyCard()">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>🎁 Случайная карта</span>
+                            <span style="color:#ffd700;">100💰</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="closeShop()" style="background:#ff0080; color:white; border:none; padding:15px; border-radius:10px; width:100%; font-size:18px; cursor:pointer;">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    `;
+    
+    const shop = document.createElement('div');
+    shop.innerHTML = shopHTML;
+    shop.id = 'shop-modal';
+    document.body.appendChild(shop);
 }
 
 function closeShop() {
-    document.getElementById('shop-modal').style.display = 'none';
+    const shop = document.getElementById('shop-modal');
+    if (shop) shop.remove();
 }
 
-function buyItem(type, price) {
-    if (gold < price) {
+function buyEnergy() {
+    if (gold >= 25) {
+        gold -= 25;
+        energy += 50;
+        if (energy > 100) energy = 100;
+        updateUI();
+        showNotification('✅ Куплено 50⚡!');
+        closeShop();
+    } else {
         showNotification('❌ Недостаточно голды!');
-        return;
-    }
-    
-    gold -= price;
-    
-    switch(type) {
-        case 'energy':
-            energy += 50;
-            if (energy > 100) energy = 100;
-            showNotification('✅ Куплено 50⚡!');
-            break;
-        case 'case':
-            const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
-            if (!cards.includes(randomCard.id)) {
-                cards.push(randomCard.id);
-                showNotification(`🎁 Получена карта: ${randomCard.title}!`);
-            } else {
-                gold += 30; // Компенсация
-                showNotification('🎁 Карта уже есть! +30💰');
-            }
-            break;
-        case 'boost':
-            // Активируем буст на 1 час
-            showNotification('🔥 Буст активирован! x2 рейтинг на 1 час!');
-            break;
-    }
-    
-    updateUI();
-    closeShop();
-}
-const API_URL = "http://localhost:8000"; // Или твой хостинг
-
-// Отправка данных на сервер
-async function saveToServer() {
-    const userData = {
-        user_id: 123, // Получить из Telegram
-        username: gameData.username,
-        energy: gameData.energy,
-        cards: gameData.cards,
-        rating: gameData.rating,
-        gold: gold
-    };
-    
-    try {
-        const response = await fetch(`${API_URL}/save`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData)
-        });
-        console.log('Данные сохранены на сервере');
-    } catch (error) {
-        console.error('Ошибка сохранения:', error);
     }
 }
 
-// Загрузка лидерборда
-async function loadLeaderboard() {
-    try {
-        const response = await fetch(`${API_URL}/leaderboard`);
-        const leaderboard = await response.json();
-        console.log('Лидерборд:', leaderboard);
-    } catch (error) {
-        console.error('Ошибка загрузки лидерборда:', error);
+function buyCard() {
+    if (gold >= 100) {
+        gold -= 100;
+        const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
+        
+        if (!cards.includes(randomCard.id)) {
+            cards.push(randomCard.id);
+            showNotification(`🎁 Получена карта: ${randomCard.title}!`);
+        } else {
+            gold += 40; // Компенсация
+            showNotification('🎁 Карта уже есть! +40💰');
+        }
+        
+        updateUI();
+        closeShop();
+    } else {
+        showNotification('❌ Недостаточно голды!');
     }
 }
+
+// ========== ЗАПУСК ИГРЫ ==========
+
+// Восстановление энергии
+setInterval(() => {
+    if (energy < 100) {
+        energy++;
+        updateUI();
+    }
+}, 60000); // +1 энергия в минуту
+
+// Запуск при загрузке
+window.onload = function() {
+    console.log('Игра загружается...');
+    
+    // Назначаем обработчик кнопке
+    const stealBtn = document.getElementById('steal-btn');
+    if (stealBtn) {
+        stealBtn.addEventListener('click', stealCard);
+        console.log('Обработчик кнопки назначен');
+    } else {
+        console.error('Кнопка не найдена!');
+        // Создаем кнопку если её нет
+        const btn = document.createElement('button');
+        btn.id = 'steal-btn';
+        btn.textContent = 'УКРАСТЬ КАРТУ';
+        btn.onclick = stealCard;
+        document.querySelector('.card').appendChild(btn);
+    }
+    
+    // Загружаем игру
+    loadGame();
+    updateCard();
+    
+    console.log('Игра готова!');
+};
+
+// Экспортируем для отладки
+window.game = {
+    stealCard,
+    updateUI,
+    watchAdForEnergy,
+    dailyReward,
+    openShop
+};
