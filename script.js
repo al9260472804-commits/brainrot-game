@@ -12,13 +12,56 @@ let game = {
     theme: 'dark'
 };
 
+// МАССИВ КАРТ С ИЗОБРАЖЕНИЯМИ
 const CARDS = [
-    { id: 1, title: "SKIBIDI TOILET", desc: "Легендарный туалет-голова", cost: 15, rarity: "legendary", image: "https://i.imgur.com/xK9T4hG.png" },
-    { id: 2, title: "GYATT", desc: "Sigma ризз в Ohio", cost: 10, rarity: "epic", image: "https://i.imgur.com/y7WkL9p.png" },
-    { id: 3, title: "FANUM TAX", desc: "Fuming забирает еду", cost: 8, rarity: "rare", image: "https://i.imgur.com/z8M9Q2r.png" },
-    { id: 4, title: "OHIO SKIBIDI", desc: "Странный туалет", cost: 12, rarity: "rare", image: "https://i.imgur.com/xK9T4hG.png" },
-    { id: 5, title: "SIGMA RIZZ", desc: "Правило 1", cost: 10, rarity: "common", image: "https://i.imgur.com/y7WkL9p.png" },
-    { id: 6, title: "KEYS TO THE BMW", desc: "Ты получил ключи", cost: 20, rarity: "legendary", image: "https://i.imgur.com/z8M9Q2r.png" }
+    { 
+        id: 1, 
+        title: "SKIBIDI TOILET", 
+        desc: "Легендарный туалет-голова", 
+        cost: 15, 
+        rarity: "legendary", 
+        image: "https://i.imgur.com/xK9T4hG.png" 
+    },
+    { 
+        id: 2, 
+        title: "GYATT", 
+        desc: "Sigma ризз в Ohio", 
+        cost: 10, 
+        rarity: "epic", 
+        image: "https://i.imgur.com/y7WkL9p.png" 
+    },
+    { 
+        id: 3, 
+        title: "FANUM TAX", 
+        desc: "Fuming забирает еду", 
+        cost: 8, 
+        rarity: "rare", 
+        image: "https://i.imgur.com/z8M9Q2r.png" 
+    },
+    { 
+        id: 4, 
+        title: "OHIO SKIBIDI", 
+        desc: "Странный туалет", 
+        cost: 12, 
+        rarity: "rare", 
+        image: "https://i.imgur.com/L4e5V7j.png" 
+    },
+    { 
+        id: 5, 
+        title: "SIGMA RIZZ", 
+        desc: "Правило 1", 
+        cost: 10, 
+        rarity: "common", 
+        image: "https://i.imgur.com/W9Kc3Lm.png" 
+    },
+    { 
+        id: 6, 
+        title: "KEYS TO THE BMW", 
+        desc: "Ты получил ключи", 
+        cost: 20, 
+        rarity: "legendary", 
+        image: "https://i.imgur.com/Q2M8vF9.png" 
+    }
 ];
 
 let currentCard = CARDS[0];
@@ -49,9 +92,6 @@ function saveGame() {
 
 // ========== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ==========
 function updateUI() {
-    // Мини-статистика
-   
-    
     // Магазин и казино
     document.getElementById('shop-balance').textContent = game.gold;
     document.getElementById('casino-balance').textContent = game.gold;
