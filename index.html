@@ -2,963 +2,649 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🧠 Brainrot Stealer - Эпичная коллекция мемов</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainrot Stealer</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="script.js" defer></script>
     <style>
+        /* ПЕРЕМЕННЫЕ ЦВЕТОВ */
         :root {
-            /* НОВАЯ ЦВЕТОВАЯ ПАЛИТРА - приятная для глаз */
-            --bg-primary: #0A0E17;
-            --bg-secondary: #111827;
-            --bg-card: #1A2236;
-            --bg-surface: #1F2937;
-            
-            --accent-primary: #3B82F6;    /* Спокойный синий */
-            --accent-secondary: #8B5CF6;  /* Приглушенный фиолетовый */
-            --accent-success: #10B981;    /* Мягкий зеленый */
-            --accent-warning: #F59E0B;    /* Теплый желтый */
-            --accent-danger: #EF4444;     /* Неяркий красный */
-            
-            --text-primary: #F3F4F6;
-            --text-secondary: #9CA3AF;
-            --text-muted: #6B7280;
-            
-            --border-light: #374151;
-            --border-dark: #1F2937;
-            
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.35);
-            
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-            
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-primary: #0a1929;
+            --bg-secondary: #1a202c;
+            --bg-card: #2d3748;
+            --accent-blue: #4299e1;
+            --accent-green: #48bb78;
+            --accent-purple: #9f7aea;
+            --accent-gold: #f6e05e;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
         }
-        
-        /* АНИМАЦИИ */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-        
+
         /* БАЗОВЫЕ СТИЛИ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
-        
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
-            padding: 0;
-            overflow-x: hidden;
+            padding-top: 120px; /* Отступ для фиксированной шапки */
         }
-        
-        /* КОНТЕЙНЕР */
-        .app-container {
-            max-width: 500px;
-            margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
-            padding-bottom: 80px;
-        }
-        
-        /* ЗАГОЛОВОК */
-        .app-header {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-            padding: 20px 16px;
-            border-bottom: 1px solid var(--border-dark);
-            position: sticky;
+
+        /* ФИКСИРОВАННАЯ ШАПКА */
+        .header {
+            position: fixed;
             top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            padding: 15px;
+            border-bottom: 2px solid #4299e1;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            height: 120px;
         }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-        
-        .logo-text {
-            font-size: 18px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* СТАТИСТИКА */
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 16px;
+            gap: 10px;
+            margin-top: 15px;
         }
-        
+
         .stat-item {
-            background: var(--bg-surface);
-            border-radius: var(--radius-sm);
-            padding: 12px 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
             text-align: center;
-            border: 1px solid var(--border-light);
-            transition: var(--transition);
-        }
-        
-        .stat-item:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
-        
-        .stat-icon {
-            color: var(--accent-primary);
-            margin-bottom: 4px;
             font-size: 14px;
         }
-        
+
         .stat-value {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-            font-family: 'Roboto Mono', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #48bb78;
         }
-        
-        .stat-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 2px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        /* ОСНОВНАЯ КАРТОЧКА */
-        .main-game-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            margin: 20px 16px;
-            padding: 0;
-            overflow: hidden;
-            border: 1px solid var(--border-dark);
-            box-shadow: var(--shadow-lg);
-            animation: slideUp 0.6s ease;
-        }
-        
-        .card-header {
-            padding: 16px 20px;
-            background: linear-gradient(90deg, var(--bg-surface), var(--bg-card));
-            border-bottom: 1px solid var(--border-dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .card-rarity {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        
-        .rarity-common { background: rgba(156, 163, 175, 0.15); color: #9CA3AF; }
-        .rarity-rare { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
-        .rarity-epic { background: rgba(139, 92, 246, 0.15); color: #A78BFA; }
-        .rarity-legendary { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
-        .rarity-mythic { background: rgba(239, 68, 68, 0.15); color: #F87171; }
-        
-        .card-energy {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--accent-warning);
-            font-weight: 600;
-        }
-        
-        .card-image-container {
-            position: relative;
+
+        /* ОСНОВНОЙ КОНТЕНТ */
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
             padding: 20px;
-            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            padding-bottom: 80px;
         }
-        
+
+        /* КАРТОЧКА */
+        .card {
+            background: linear-gradient(145deg, #2d3748, #4a5568);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #4299e1;
+            box-shadow: 0 8px 32px rgba(66, 153, 225, 0.3);
+        }
+
         .card-image {
             width: 100%;
-            height: 240px;
+            height: 200px;
             object-fit: cover;
-            border-radius: var(--radius-lg);
-            border: 2px solid var(--border-light);
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 2px solid #9f7aea;
         }
-        
-        .card-image:hover {
-            transform: scale(1.02);
-            border-color: var(--accent-primary);
-        }
-        
-        .card-info {
-            padding: 20px;
-        }
-        
-        .card-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        
-        .card-description {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        
-        /* КНОПКА КРАЖИ */
-        .steal-button {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border: none;
-            border-radius: var(--radius-lg);
+
+        /* КНОПКИ */
+        .steal-btn {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
             color: white;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .steal-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
-        }
-        
-        .steal-button:active {
-            transform: translateY(0);
-        }
-        
-        .steal-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shimmer 2s infinite;
-        }
-        
-        /* БЫСТРЫЕ ДЕЙСТВИЯ */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin: 0 16px 20px;
-        }
-        
-        .action-button {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .action-button:hover {
-            background: var(--bg-card);
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
-        
-        .action-icon {
-            font-size: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .action-daily .action-icon { background: rgba(16, 185, 129, 0.15); color: var(--accent-success); }
-        .action-shop .action-icon { background: rgba(139, 92, 246, 0.15); color: var(--accent-secondary); }
-        .action-casino .action-icon { background: rgba(245, 158, 11, 0.15); color: var(--accent-warning); }
-        .action-friends .action-icon { background: rgba(59, 130, 246, 0.15); color: var(--accent-primary); }
-        
-        /* КОЛЛЕКЦИЯ */
-        .collection-section {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            margin: 0 16px 20px;
+            border: none;
             padding: 20px;
-            border: 1px solid var(--border-dark);
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        
-        .view-all {
-            color: var(--accent-primary);
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        
-        .collection-card {
-            background: var(--bg-surface);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--border-light);
-            transition: var(--transition);
-        }
-        
-        .collection-card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-4px);
-        }
-        
-        .collection-card-img {
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
             width: 100%;
-            height: 80px;
-            object-fit: cover;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        
-        .collection-card-info {
-            padding: 8px;
+
+        .steal-btn:hover {
+            background: linear-gradient(135deg, #3182ce, #2b6cb0);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(49, 130, 206, 0.4);
         }
-        
-        .collection-card-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-primary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+
+        .action-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #48bb78;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 140px;
         }
-        
+
+        .action-btn:hover {
+            background: rgba(72, 187, 120, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* КНОПКИ В РЯД */
+        .actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
         /* НИЖНЕЕ МЕНЮ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-dark);
-            padding: 12px 16px;
+            background: #1a202c;
             display: flex;
             justify-content: space-around;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+            padding: 12px;
+            border-top: 2px solid #4299e1;
             max-width: 500px;
             margin: 0 auto;
         }
-        
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
+
+        .nav-btn {
             background: none;
             border: none;
-            color: var(--text-secondary);
-            padding: 8px 12px;
-            border-radius: var(--radius-md);
+            color: #a0aec0;
+            font-size: 24px;
             cursor: pointer;
-            transition: var(--transition);
-            font-size: 12px;
-            font-weight: 500;
+            padding: 10px;
+            transition: all 0.3s;
+            border-radius: 10px;
         }
-        
-        .nav-item.active {
-            color: var(--accent-primary);
-            background: rgba(59, 130, 246, 0.1);
+
+        .nav-btn.active {
+            color: #4299e1;
+            background: rgba(66, 153, 225, 0.1);
         }
-        
-        .nav-item:hover {
-            color: var(--text-primary);
-            background: var(--bg-surface);
+
+        .nav-btn:hover {
+            color: white;
+            background: rgba(255,255,255,0.1);
         }
-        
-        .nav-icon {
-            font-size: 18px;
-        }
-        
-        /* УВЕДОМЛЕНИЯ */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 16px;
-            background: var(--bg-card);
-            border-left: 4px solid var(--accent-success);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            box-shadow: var(--shadow-lg);
-            max-width: 320px;
-            z-index: 2000;
-            animation: slideUp 0.3s ease;
+
+        /* СТРАНИЦЫ */
+        .page {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
-        
-        .notification-title {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
+
+        .page.active {
+            display: block;
         }
-        
-        .notification-message {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-        
-        /* ЗАГРУЗОЧНЫЙ ЭКРАН */
-        .loading-overlay {
+
+        /* МОДАЛЬНЫЕ ОКНА */
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
+            background: rgba(0,0,0,0.9);
+            display: none;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
+            z-index: 2000;
+            padding: 20px;
         }
-        
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border-light);
-            border-top-color: var(--accent-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+
+        .modal.active {
+            display: flex;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+
+        .modal-content {
+            background: #2d3748;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            border: 3px solid #4299e1;
+            max-height: 80vh;
+            overflow-y: auto;
         }
-        
+
+        /* УВЕДОМЛЕНИЯ */
+        .notification {
+            position: fixed;
+            top: 140px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+        }
+
+        /* АНИМАЦИИ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
         /* АДАПТИВНОСТЬ */
-        @media (max-width: 480px) {
-            .app-container {
+        @media (max-width: 500px) {
+            .game-container {
+                padding: 10px;
                 padding-bottom: 70px;
+            }
+            
+            .card-image {
+                height: 180px;
+            }
+            
+            .steal-btn {
+                padding: 18px;
+                font-size: 18px;
+            }
+            
+            .action-btn {
+                min-width: calc(50% - 20px);
             }
             
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
-            .card-image {
-                height: 200px;
-            }
-            
-            .steal-button {
-                padding: 18px;
-                font-size: 16px;
-            }
-            
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-            
-            .cards-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .bottom-nav {
-                padding: 10px 8px;
-            }
-            
-            .nav-item {
-                padding: 6px 8px;
-                font-size: 11px;
-            }
-            
-            .nav-icon {
-                font-size: 16px;
-            }
-        }
-        
-        /* ТЕМНАЯ/СВЕТЛАЯ ТЕМА (ПЕРЕКЛЮЧЕНИЕ) */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1001;
-            transition: var(--transition);
-        }
-        
-        .theme-toggle:hover {
-            background: var(--bg-card);
-            border-color: var(--accent-primary);
         }
     </style>
 </head>
 <body>
-    <!-- ЗАГРУЗОЧНЫЙ ЭКРАН -->
-    <div class="loading-overlay" id="loading">
-        <div class="loader"></div>
-        <p style="margin-top: 20px; color: var(--text-secondary);">Загрузка коллекции...</p>
+    <!-- ФИКСИРОВАННАЯ ШАПКА -->
+    <div class="header">
+        <h2 style="text-align: center; color: #4299e1;">
+            <i class="fas fa-brain"></i> BRAINROT STEALER
+        </h2>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div><i class="fas fa-bolt" style="color: #f6e05e;"></i></div>
+                <div class="stat-value" id="energy">100</div>
+                <div style="font-size: 12px;">Энергия</div>
+            </div>
+            <div class="stat-item">
+                <div><i class="fas fa-layer-group" style="color: #9f7aea;"></i></div>
+                <div class="stat-value" id="cards-count">0</div>
+                <div style="font-size: 12px;">Карты</div>
+            </div>
+            <div class="stat-item">
+                <div><i class="fas fa-star" style="color: #4299e1;"></i></div>
+                <div class="stat-value" id="rating">1000</div>
+                <div style="font-size: 12px;">Рейтинг</div>
+            </div>
+            <div class="stat-item">
+                <div><i class="fas fa-coins" style="color: #f6e05e;"></i></div>
+                <div class="stat-value" id="gold">0</div>
+                <div style="font-size: 12px;">Голда</div>
+            </div>
+        </div>
     </div>
 
-    <!-- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ -->
-    <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-    </button>
+    <!-- УВЕДОМЛЕНИЕ -->
+    <div class="notification" id="notification"></div>
 
-    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
-    <div class="app-container">
-        <!-- ШАПКА -->
-        <header class="app-header">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <div class="logo-text">Brainrot Stealer</div>
-                </div>
-                <div class="header-actions">
-                    <button class="header-button" id="settingsBtn">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- СТАТИСТИКА -->
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-bolt"></i></div>
-                    <div class="stat-value" id="energy">100/100</div>
-                    <div class="stat-label">Энергия</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
-                    <div class="stat-value" id="cards-count">0</div>
-                    <div class="stat-label">Карты</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-star"></i></div>
-                    <div class="stat-value" id="rating">1000</div>
-                    <div class="stat-label">Рейтинг</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                    <div class="stat-value" id="gold">0</div>
-                    <div class="stat-label">Голда</div>
-                </div>
-            </div>
-        </header>
-
-        <!-- ОСНОВНАЯ КАРТОЧКА -->
-        <main class="main-content">
-            <div class="main-game-card">
-                <div class="card-header">
-                    <div class="card-rarity rarity-legendary" id="card-rarity">Легендарная</div>
-                    <div class="card-energy">
-                        <i class="fas fa-bolt"></i>
-                        <span id="card-cost">15</span>
-                    </div>
-                </div>
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="game-container">
+        <!-- ГЛАВНАЯ СТРАНИЦА -->
+        <div id="main-page" class="page active">
+            <!-- КАРТОЧКА ДЛЯ КРАЖИ -->
+            <div class="card">
+                <h3 id="card-title" style="color: #9f7aea;">SKIBIDI TOILET</h3>
+                <p id="card-desc" style="color: #cbd5e0; margin: 10px 0;">Легендарный туалет-голова</p>
                 
-                <div class="card-image-container">
-                    <img src="https://images.unsplash.com/photo-1611605698335-8b1569810432?w=400&h=300&fit=crop" 
-                         alt="Карта" 
-                         class="card-image"
-                         id="card-image">
-                </div>
+                <img src="https://i.imgur.com/xK9T4hG.png" id="card-image" class="card-image">
                 
-                <div class="card-info">
-                    <h1 class="card-title" id="card-title">SKIBIDI TOILET</h1>
-                    <p class="card-description" id="card-desc">
-                        Легендарный туалет-голова из вселенной Skibidi. Один из самых желанных мемов в коллекции.
-                    </p>
-                    
-                    <button class="steal-button" id="steal-btn">
-                        <i class="fas fa-hand-sparkles"></i>
-                        УКРАСТЬ КАРТУ
-                    </button>
-                </div>
+                <p style="color: #f6e05e; margin: 10px 0;">
+                    <i class="fas fa-bolt"></i> Цена: <span id="card-cost">15</span> энергии
+                </p>
+                
+                <button class="steal-btn" id="steal-btn" onclick="stealCard()">
+                    <i class="fas fa-hand-sparkles"></i> УКРАСТЬ КАРТУ
+                </button>
             </div>
 
             <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
-            <div class="quick-actions">
-                <button class="action-button action-daily" onclick="dailyReward()">
-                    <div class="action-icon">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <div>Ежедневная награда</div>
-                    <small style="color: var(--accent-success); font-size: 12px;">+50⚡</small>
+            <div class="actions-row">
+                <button class="action-btn" onclick="dailyReward()">
+                    <i class="fas fa-gift"></i> Награда
                 </button>
-                
-                <button class="action-button action-shop" onclick="openShop()">
-                    <div class="action-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <div>Магазин</div>
-                    <small style="color: var(--accent-secondary); font-size: 12px;">Кейсы</small>
+                <button class="action-btn" onclick="openShop()">
+                    <i class="fas fa-shopping-cart"></i> Магазин
                 </button>
-                
-                <button class="action-button action-casino" onclick="openCasino()">
-                    <div class="action-icon">
-                        <i class="fas fa-dice"></i>
-                    </div>
-                    <div>Казино</div>
-                    <small style="color: var(--accent-warning); font-size: 12px;">Азартные игры</small>
+                <button class="action-btn" onclick="openInventory()">
+                    <i class="fas fa-layer-group"></i> Коллекция
                 </button>
-                
-                <button class="action-button action-friends" onclick="openFriends()">
-                    <div class="action-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div>Пригласить</div>
-                    <small style="color: var(--accent-primary); font-size: 12px;">+500💰</small>
+                <button class="action-btn" onclick="openCasino()">
+                    <i class="fas fa-dice"></i> Казино
                 </button>
             </div>
 
             <!-- КОЛЛЕКЦИЯ -->
-            <section class="collection-section">
-                <div class="section-header">
-                    <h2 class="section-title">Моя коллекция</h2>
-                    <a href="#" class="view-all" onclick="showCollection()">
-                        Все карты <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-                
-                <div class="cards-grid" id="collection-grid">
+            <div class="card">
+                <h3 style="color: #9f7aea;">
+                    <i class="fas fa-layer-group"></i> Моя коллекция
+                </h3>
+                <div id="collection-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;">
                     <!-- Карточки загрузятся через JS -->
                 </div>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА МАГАЗИНА -->
+        <div id="shop-page" class="page">
+            <div class="card">
+                <h2 style="color: #9f7aea; text-align: center;">
+                    <i class="fas fa-shopping-cart"></i> МАГАЗИН
+                </h2>
                 
-                <div class="collection-stats" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light);">
-                    <div style="display: flex; justify-content: space-between; font-size: 14px; color: var(--text-secondary);">
-                        <span>Уникальных: <strong id="unique-cards">0</strong></span>
-                        <span>Всего краж: <strong id="total-steals">0</strong></span>
-                        <span>Уровень: <strong id="player-level">1</strong></span>
+                <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; text-align: center; margin: 15px 0;">
+                    <div style="color: #cbd5e0;">Ваш баланс:</div>
+                    <div style="font-size: 32px; color: #f6e05e;">
+                        <i class="fas fa-coins"></i> <span id="shop-gold">0</span>
                     </div>
                 </div>
-            </section>
 
-            <!-- АЧИВКИ -->
-            <section class="collection-section">
-                <div class="section-header">
-                    <h2 class="section-title">Достижения</h2>
-                    <span class="view-all" style="cursor: default;">
-                        <span id="achievements-count">0</span>/10
-                    </span>
+                <div id="shop-items" style="display: grid; gap: 15px;">
+                    <!-- Товары загрузятся через JS -->
                 </div>
+
+                <button onclick="showPage('main')" style="background: #e53e3e; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; margin-top: 20px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА КОЛЛЕКЦИИ -->
+        <div id="inventory-page" class="page">
+            <div class="card">
+                <h2 style="color: #9f7aea; text-align: center;">
+                    <i class="fas fa-layer-group"></i> ВСЯ КОЛЛЕКЦИЯ
+                </h2>
                 
-                <div class="achievements-grid" id="achievements-grid" style="display: grid; gap: 12px;">
-                    <!-- Достижения загрузятся через JS -->
+                <div id="full-collection" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0;">
+                    <!-- Все карты загрузятся через JS -->
                 </div>
-            </section>
-        </main>
 
-        <!-- НИЖНЕЕ МЕНЮ -->
-        <nav class="bottom-nav">
-            <button class="nav-item active" onclick="showPage('main')">
-                <i class="fas fa-home nav-icon"></i>
-                <span>Главная</span>
-            </button>
-            <button class="nav-item" onclick="showPage('collection')">
-                <i class="fas fa-layer-group nav-icon"></i>
-                <span>Коллекция</span>
-            </button>
-            <button class="nav-item" onclick="showPage('shop')">
-                <i class="fas fa-shopping-cart nav-icon"></i>
-                <span>Магазин</span>
-            </button>
-            <button class="nav-item" onclick="showPage('battle')">
-                <i class="fas fa-crosshairs nav-icon"></i>
-                <span>Битва</span>
-            </button>
-            <button class="nav-item" onclick="showPage('profile')">
-                <i class="fas fa-user nav-icon"></i>
-                <span>Профиль</span>
-            </button>
-        </nav>
+                <button onclick="showPage('main')" style="background: #e53e3e; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; margin-top: 20px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА КАЗИНО -->
+        <div id="casino-page" class="page">
+            <div class="card">
+                <h2 style="color: #9f7aea; text-align: center;">
+                    <i class="fas fa-dice"></i> КАЗИНО
+                </h2>
+                
+                <div style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-radius: 10px; text-align: center; margin: 15px 0;">
+                    <div style="color: #cbd5e0;">Ваш баланс:</div>
+                    <div style="font-size: 32px; color: #f6e05e;">
+                        <i class="fas fa-coins"></i> <span id="casino-gold">0</span>
+                    </div>
+                </div>
+
+                <div style="display: grid; gap: 15px;">
+                    <div class="casino-game" onclick="playSlotMachine()" style="background: linear-gradient(135deg, #2d3748, #4a5568); padding: 20px; border-radius: 15px; border: 2px solid #f6e05e; cursor: pointer; text-align: center;">
+                        <div style="font-size: 40px;">🎰</div>
+                        <h3 style="color: #f6e05e;">Слот-машина</h3>
+                        <p style="color: #cbd5e0;">50💰 за спин</p>
+                        <div style="color: #48bb78;">Шанс x2 - x100</div>
+                    </div>
+
+                    <div class="casino-game" onclick="playRoulette()" style="background: linear-gradient(135deg, #2d3748, #4a5568); padding: 20px; border-radius: 15px; border: 2px solid #e53e3e; cursor: pointer; text-align: center;">
+                        <div style="font-size: 40px;">🎡</div>
+                        <h3 style="color: #e53e3e;">Рулетка</h3>
+                        <p style="color: #cbd5e0;">100💰 за ставку</p>
+                        <div style="color: #48bb78;">Шанс x1.5 - x36</div>
+                    </div>
+                </div>
+
+                <button onclick="showPage('main')" style="background: #e53e3e; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; margin-top: 20px; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- УВЕДОМЛЕНИЕ -->
-    <div class="notification" id="notification">
-        <div class="notification-title" id="notification-title">Уведомление</div>
-        <div class="notification-message" id="notification-message">Сообщение</div>
+    <!-- НИЖНЕЕ МЕНЮ -->
+    <div class="bottom-nav">
+        <button class="nav-btn active" onclick="showPage('main')">
+            <i class="fas fa-home"></i>
+        </button>
+        <button class="nav-btn" onclick="showPage('shop')">
+            <i class="fas fa-shopping-cart"></i>
+        </button>
+        <button class="nav-btn" onclick="showPage('inventory')">
+            <i class="fas fa-layer-group"></i>
+        </button>
+        <button class="nav-btn" onclick="showPage('casino')">
+            <i class="fas fa-dice"></i>
+        </button>
+        <button class="nav-btn" onclick="openSettings()">
+            <i class="fas fa-cog"></i>
+        </button>
     </div>
 
-    <!-- МОДАЛЬНЫЕ ОКНА (появятся через JS) -->
-    <div id="modal-container"></div>
+    <!-- МОДАЛЬНЫЕ ОКНА -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: #9f7aea; text-align: center; margin-bottom: 20px;">
+                <i class="fas fa-cog"></i> НАСТРОЙКИ
+            </h2>
+            
+            <div style="margin: 20px 0;">
+                <h3 style="color: #cbd5e0; margin-bottom: 10px;">
+                    <i class="fas fa-palette"></i> Тема оформления
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                    <button onclick="setTheme('dark')" class="theme-btn" style="background: #1a202c; color: white; padding: 10px; border-radius: 8px; border: 2px solid #4299e1;">
+                        🌙 Темная
+                    </button>
+                    <button onclick="setTheme('light')" class="theme-btn" style="background: #f7fafc; color: #1a202c; padding: 10px; border-radius: 8px; border: 2px solid #4299e1;">
+                        ☀️ Светлая
+                    </button>
+                    <button onclick="setTheme('blue')" class="theme-btn" style="background: #2b6cb0; color: white; padding: 10px; border-radius: 8px; border: 2px solid #4299e1;">
+                        🔵 Синяя
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <h3 style="color: #cbd5e0; margin-bottom: 10px;">
+                    <i class="fas fa-volume-up"></i> Звук
+                </h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-volume-mute" style="color: #cbd5e0;"></i>
+                    <input type="range" id="volume-slider" min="0" max="100" value="50" style="flex: 1;">
+                    <i class="fas fa-volume-up" style="color: #cbd5e0;"></i>
+                </div>
+            </div>
+
+            <button onclick="closeModal()" style="background: #e53e3e; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer;">
+                Закрыть
+            </button>
+        </div>
+    </div>
 
     <script>
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            // Скрываем загрузочный экран
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-            }, 800);
-            
-            // Настройка темы
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
-            
-            themeToggle.addEventListener('click', function() {
-                const isDark = document.body.classList.toggle('light-theme');
-                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-                
-                // Сохраняем тему
-                localStorage.setItem('brainrot-theme', isDark ? 'light' : 'dark');
-            });
-            
-            // Загружаем сохраненную тему
-            const savedTheme = localStorage.getItem('brainrot-theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
-                icon.className = 'fas fa-sun';
+        // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+        let currentPage = 'main';
+        let game = {
+            energy: 100,
+            cards: [],
+            rating: 1000,
+            gold: 0,
+            theme: 'dark'
+        };
+
+        // ЗАГРУЗКА ИГРЫ
+        function loadGame() {
+            const saved = localStorage.getItem('brainrot_simple');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    game = { ...game, ...data };
+                } catch(e) {
+                    console.log("Новая игра");
+                }
             }
+            updateUI();
+            loadCollection();
+            loadShopItems();
             
-            // Инициализация игры
-            if (typeof loadGame === 'function') {
-                loadGame();
-            }
-        });
-        
-        // Функция для показа уведомлений
-        function showNotification(title, message, type = 'success') {
+            // Применяем сохраненную тему
+            setTheme(game.theme || 'dark');
+        }
+
+        // СОХРАНЕНИЕ ИГРЫ
+        function saveGame() {
+            localStorage.setItem('brainrot_simple', JSON.stringify(game));
+        }
+
+        // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+        function updateUI() {
+            document.getElementById('energy').textContent = game.energy;
+            document.getElementById('cards-count').textContent = game.cards.length;
+            document.getElementById('rating').textContent = game.rating;
+            document.getElementById('gold').textContent = game.gold;
+            document.getElementById('shop-gold').textContent = game.gold;
+            document.getElementById('casino-gold').textContent = game.gold;
+            saveGame();
+        }
+
+        // ПОКАЗ УВЕДОМЛЕНИЯ
+        function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
-            const titleEl = document.getElementById('notification-title');
-            const messageEl = document.getElementById('notification-message');
-            
-            // Устанавливаем цвет в зависимости от типа
             const colors = {
-                success: '#10B981',
-                error: '#EF4444',
-                warning: '#F59E0B',
-                info: '#3B82F6'
+                success: '#48bb78',
+                error: '#e53e3e',
+                warning: '#ed8936',
+                info: '#4299e1'
             };
             
-            notification.style.borderLeftColor = colors[type] || colors.info;
-            
-            titleEl.textContent = title;
-            messageEl.textContent = message;
-            
+            notification.style.background = colors[type] || colors.info;
+            notification.textContent = message;
             notification.style.display = 'block';
             
-            // Автоскрытие через 3 секунды
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 3000);
         }
-        
-        // Показ страниц
+
+        // СМЕНА СТРАНИЦ
         function showPage(page) {
-            // Обновляем активную кнопку в навигации
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
+            // Скрываем все страницы
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
             });
             
-            event.target.classList.add('active');
-            
-            // Показываем соответствующую страницу
-            showNotification('Навигация', `Переход на страницу: ${page}`, 'info');
-            
-            // Здесь можно добавить загрузку контента для разных страниц
+            // Показываем нужную страницу
+            const targetPage = document.getElementById(page + '-page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+                currentPage = page;
+                
+                // Обновляем навигацию
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`.nav-btn[onclick*="${page}"]`).classList.add('active');
+            }
         }
-        
-        // Открытие магазина (простой пример)
-        function openShop() {
-            const modalHTML = `
-                <div style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(10, 14, 23, 0.95); z-index:2000; display:flex; align-items:center; justify-content:center; padding:20px;">
-                    <div style="background:var(--bg-card); border-radius:24px; padding:30px; max-width:400px; width:100%; border:1px solid var(--border-dark); max-height:80vh; overflow-y:auto;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-                            <h2 style="color:var(--text-primary); font-size:22px;"><i class="fas fa-shopping-cart" style="color:var(--accent-secondary);"></i> Магазин</h2>
-                            <button onclick="closeModal()" style="background:none; border:none; color:var(--text-secondary); font-size:24px; cursor:pointer;">×</button>
-                        </div>
-                        
-                        <div style="background:var(--bg-surface); padding:20px; border-radius:16px; margin-bottom:20px; text-align:center;">
-                            <div style="font-size:14px; color:var(--text-secondary);">Ваш баланс</div>
-                            <div style="font-size:32px; color:var(--accent-warning); font-weight:700; margin-top:8px;">
-                                <i class="fas fa-coins"></i> ${game?.gold || 0}
-                            </div>
-                        </div>
-                        
-                        <div style="display:grid; gap:16px;">
-                            <div style="background:linear-gradient(135deg, var(--bg-surface), var(--bg-card)); padding:20px; border-radius:16px; border:2px solid #3B82F6;">
-                                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                                    <div style="font-size:32px;">📦</div>
-                                    <div>
-                                        <div style="font-weight:700; color:var(--text-primary);">Обычный кейс</div>
-                                        <div style="font-size:14px; color:var(--text-secondary);">Шанс на редкую карту</div>
-                                    </div>
-                                </div>
-                                <button onclick="buyCase('basic')" style="width:100%; padding:12px; background:#3B82F6; color:white; border:none; border-radius:12px; font-weight:600; cursor:pointer;">
-                                    Купить за 100 <i class="fas fa-coins"></i>
-                                </button>
-                            </div>
-                            
-                            <div style="background:linear-gradient(135deg, var(--bg-surface), var(--bg-card)); padding:20px; border-radius:16px; border:2px solid #8B5CF6;">
-                                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                                    <div style="font-size:32px;">💎</div>
-                                    <div>
-                                        <div style="font-weight:700; color:var(--text-primary);">Премиум кейс</div>
-                                        <div style="font-size:14px; color:var(--text-secondary);">Гарантированная редкая карта</div>
-                                    </div>
-                                </div>
-                                <button onclick="buyCase('premium')" style="width:100%; padding:12px; background:#8B5CF6; color:white; border:none; border-radius:12px; font-weight:600; cursor:pointer;">
-                                    Купить за 500 <i class="fas fa-coins"></i>
-                                </button>
-                            </div>
-                            
-                            <div style="background:linear-gradient(135deg, var(--bg-surface), var(--bg-card)); padding:20px; border-radius:16px; border:2px solid #F59E0B;">
-                                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                                    <div style="font-size:32px;">⚡</div>
-                                    <div>
-                                        <div style="font-weight:700; color:var(--text-primary);">Бустер энергии</div>
-                                        <div style="font-size:14px; color:var(--text-secondary);">+50 энергии сразу</div>
-                                    </div>
-                                </div>
-                                <button onclick="buyEnergy()" style="width:100%; padding:12px; background:#F59E0B; color:white; border:none; border-radius:12px; font-weight:600; cursor:pointer;">
-                                    Купить за 50 <i class="fas fa-coins"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            const modalContainer = document.getElementById('modal-container');
-            modalContainer.innerHTML = modalHTML;
+
+        // ОТКРЫТИЕ/ЗАКРЫТИЕ МОДАЛЬНЫХ ОКОН
+        function openSettings() {
+            document.getElementById('settings-modal').classList.add('active');
         }
-        
+
         function closeModal() {
-            document.getElementById('modal-container').innerHTML = '';
+            document.getElementById('settings-modal').classList.remove('active');
         }
-        
-        // Покупки
-        function buyCase(type) {
-            const prices = { basic: 100, premium: 500 };
-            const price = prices[type];
-            
-            if (game.gold >= price) {
-                game.gold -= price;
-                showNotification('🎁 Кейс куплен!', `${type === 'basic' ? 'Обычный' : 'Премиум'} кейс добавлен в инвентарь`, 'success');
-                closeModal();
-                updateUI();
-            } else {
-                showNotification('❌ Недостаточно голды', `Нужно ещё ${price - game.gold}💰`, 'error');
-            }
+
+        function openShop() {
+            showPage('shop');
         }
-        
-        function buyEnergy() {
-            if (game.gold >= 50) {
-                game.gold -= 50;
-                game.energy = Math.min(game.energy + 50, game.maxEnergy || 100);
-                showNotification('⚡ Энергия куплена!', '+50 к энергии', 'success');
-                closeModal();
-                updateUI();
-            } else {
-                showNotification('❌ Недостаточно голды', 'Нужно 50💰', 'error');
-            }
+
+        function openInventory() {
+            showPage('inventory');
+            loadFullCollection();
         }
-        
-        // Другие страницы
+
         function openCasino() {
-            showNotification('🎰 Казино', 'Раздел в разработке', 'info');
+            showPage('casino');
         }
-        
-        function openFriends() {
-            showNotification('👥 Друзья', 'Раздел в разработке', 'info');
+
+        // СМЕНА ТЕМЫ
+        function setTheme(theme) {
+            game.theme = theme;
+            const themes = {
+                dark: ['#0a1929', '#1a202c', '#2d3748'],
+                light: ['#f7fafc', '#e2e8f0', '#ffffff'],
+                blue: ['#1a365d', '#2d3748', '#4a5568']
+            };
+            
+            const root = document.documentElement;
+            const colors = themes[theme] || themes.dark;
+            
+            root.style.setProperty('--bg-primary', colors[0]);
+            root.style.setProperty('--bg-secondary', colors[1]);
+            root.style.setProperty('--bg-card', colors[2]);
+            
+            saveGame();
+            showNotification(`Тема изменена на ${theme}`, 'success');
         }
-        
-        function showCollection() {
-            showNotification('📚 Коллекция', 'Просмотр всех карт', 'info');
-        }
+
+        // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+        window.addEventListener('load', function() {
+            loadGame();
+            
+            // Назначаем обработчик кнопке кражи
+            document.getElementById('steal-btn').addEventListener('click', stealCard);
+            
+            // Восстановление энергии
+            setInterval(() => {
+                if (game.energy < 100) {
+                    game.energy++;
+                    updateUI();
+                }
+            }, 30000);
+        });
+
+        // Сделаем функции глобальными
+        window.showPage = showPage;
+        window.openShop = openShop;
+        window.openInventory = openInventory;
+        window.openCasino = openCasino;
+        window.openSettings = openSettings;
+        window.closeModal = closeModal;
+        window.setTheme = setTheme;
     </script>
 </body>
 </html>
