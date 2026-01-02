@@ -1,509 +1,373 @@
-/* ========== BRAINROT STEALER ULTIMATE STYLES ========== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+/* ========== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ СТРАНИЦ ========== */
+
+/* МИНИ-НАВИГАЦИЯ НА ГЛАВНОЙ */
+.mini-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
 }
 
-body {
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+.mini-nav-btn {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid #9370DB;
     color: white;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    min-height: 100vh;
-    padding: 15px;
-    overflow-x: hidden;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
 }
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding-bottom: 100px;
+.mini-nav-btn:hover {
+    background: rgba(147, 112, 219, 0.3);
+    transform: translateY(-3px);
 }
 
-/* ШАПКА */
-.header {
+/* КОНТЕНТ СТРАНИЦ */
+.page-content {
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+/* НАСТРОЙКИ */
+.settings-content {
+    padding: 20px;
+}
+
+.settings-section {
     background: rgba(26, 26, 46, 0.9);
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
     border: 2px solid #00ff88;
-    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
-    backdrop-filter: blur(10px);
 }
 
-.header h1 {
+.settings-section h3 {
     color: #00ff88;
-    text-align: center;
-    font-size: 1.8rem;
     margin-bottom: 15px;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 10px;
 }
 
-.stats-grid {
+.settings-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.settings-option:last-child {
+    border-bottom: none;
+}
+
+.slider {
+    width: 60%;
+    height: 25px;
+    background: #333;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.theme-buttons {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 }
 
-.stat-item {
-    background: rgba(255, 255, 255, 0.1);
+.theme-btn {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid #00ff88;
+    color: white;
     padding: 12px;
     border-radius: 10px;
-    text-align: center;
-    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.data-btn {
+    background: #4169E1;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    width: 100%;
+    margin: 5px 0;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
+}
+
+.data-btn.danger {
+    background: #ff0000;
+}
+
+/* СВИТЧЕР */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #00ff88;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* МИНИ-ИГРЫ */
+.minigames-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.minigame {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    border: 3px solid #FF00FF;
+    cursor: pointer;
     transition: all 0.3s;
 }
 
-.stat-item:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
+.minigame:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255, 0, 255, 0.4);
 }
 
-.stat-item i {
-    color: #00ff88;
+.minigame-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
-/* ГЛАВНАЯ КАРТОЧКА */
-.main-card {
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    border-radius: 25px;
-    padding: 25px;
-    margin-bottom: 20px;
-    border: 3px solid #ff0080;
-    box-shadow: 0 15px 35px rgba(255, 0, 128, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.card-rarity {
-    background: linear-gradient(45deg, #FFD700, #FFA500);
-    color: black;
-    padding: 5px 15px;
-    border-radius: 20px;
+.minigame-title {
+    font-size: 1.3rem;
     font-weight: bold;
+    color: #FF00FF;
+}
+
+.minigame-desc {
+    color: #aaa;
+    margin-top: 5px;
     font-size: 0.9rem;
 }
 
-.card-energy {
-    background: rgba(0, 255, 136, 0.2);
-    color: #00ff88;
-    padding: 5px 15px;
+/* ПРОФИЛЬ */
+.profile-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
     border-radius: 20px;
+    padding: 20px;
+    margin: 20px;
+    border: 3px solid #00ff88;
+}
+
+.profile-avatar {
+    position: relative;
+    margin-right: 20px;
+}
+
+.profile-avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #ff0080;
+}
+
+.avatar-change {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #00ff88;
+    color: black;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-info h3 {
+    color: #00ff88;
+    margin-bottom: 10px;
+}
+
+.profile-stats {
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px;
+    border: 2px solid #9370DB;
+}
+
+.stats-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.stats-list div {
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+
+/* БИТВА */
+.battle-modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.battle-mode {
+    background: linear-gradient(135deg, #8B0000, #B22222);
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    border: 3px solid #FF0000;
+    transition: all 0.3s;
+}
+
+.battle-mode:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 0, 0, 0.4);
+}
+
+.battle-mode h3 {
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.battle-reward {
+    color: #00ff88;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+/* ЛИДЕРБОРД АРЕНЫ */
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    margin: 5px 0;
+    border-radius: 10px;
+}
+
+.rank {
+    color: #FFD700;
     font-weight: bold;
 }
 
-.card-img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin: 15px 0;
-    border: 3px solid #00ff88;
-    animation: rarityGlow 2s infinite;
+.name {
+    flex-grow: 1;
+    margin: 0 10px;
 }
 
-.card-info {
-    text-align: center;
-    margin: 15px 0;
-}
-
-.card-info h2 {
-    color: #00ff88;
-    font-size: 1.8rem;
-    margin-bottom: 5px;
-}
-
-.card-info p {
-    color: #aaa;
-    font-size: 1rem;
-}
-
-/* КНОПКА КРАЖИ */
-.steal-btn {
+.arena-find-btn {
     background: linear-gradient(45deg, #ff0080, #ff00ff);
     color: white;
     border: none;
     padding: 20px;
     border-radius: 15px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    width: 100%;
+    width: calc(100% - 40px);
+    margin: 20px;
     cursor: pointer;
-    transition: all 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    letter-spacing: 1px;
-}
-
-.steal-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(255, 0, 128, 0.4);
-}
-
-.steal-btn:active {
-    transform: translateY(0);
-}
-
-/* БЫСТРЫЕ ДЕЙСТВИЯ */
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 20px 0;
-}
-
-.action-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 2px solid #4169E1;
-    padding: 15px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 0.9rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.action-btn:hover {
-    background: rgba(65, 105, 225, 0.3);
-    transform: translateY(-2px);
-}
-
-.action-btn i {
-    font-size: 1.2rem;
-    color: #4169E1;
-}
-
-.action-btn small {
-    color: #ffd700;
-    font-size: 0.8rem;
-}
-
-/* ТАБЫ */
-.tabs {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
-    margin: 20px 0;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 5px;
-    border-radius: 15px;
-}
-
-.tab-button {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: none;
-    padding: 12px 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 0.8rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.tab-button.active {
-    background: #00ff88;
-    color: black;
-    font-weight: bold;
-}
-
-.tab-button i {
-    font-size: 1.2rem;
-}
-
-/* КОНТЕНТ ТАБОВ */
-.tab-content {
-    background: rgba(26, 26, 46, 0.9);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 2px solid #9370DB;
-    min-height: 300px;
-}
-
-.tab-content h3 {
-    color: #9370DB;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* КОЛЛЕКЦИЯ */
-.collection-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.card-small {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    padding: 10px;
-    transition: all 0.3s;
-    border: 2px solid #555;
-}
-
-.card-small:hover {
-    transform: scale(1.05);
-    border-color: #00ff88;
-}
-
-.card-small img {
-    width: 100%;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-/* ДРУЗЬЯ И РЕФЕРАЛЫ */
-.friends-container {
-    display: grid;
-    gap: 20px;
-}
-
-.referral-box {
-    background: linear-gradient(135deg, #1a1a2e, #0f3460);
-    padding: 20px;
-    border-radius: 15px;
-    border: 2px solid #00ff88;
-}
-
-.referral-code {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 15px;
-    border-radius: 10px;
-    font-family: monospace;
-    font-size: 1.5rem;
-    letter-spacing: 2px;
-    margin: 10px 0;
-    border: 2px dashed #00ff88;
-    color: #00ff88;
-}
-
-.copy-btn {
-    background: #4169E1;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* ДОСТИЖЕНИЯ */
-.achievements-container {
-    display: grid;
-    gap: 15px;
-}
-
-.progress-bar {
-    background: rgba(255, 255, 255, 0.1);
-    height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 10px 0;
-}
-
-.progress-fill {
-    background: linear-gradient(90deg, #00ff88, #00ccff);
-    height: 100%;
-    border-radius: 10px;
-    transition: width 1s ease;
-}
-
-.progress-text {
-    text-align: center;
-    color: #aaa;
-    font-size: 0.9rem;
-}
-
-.achievements-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
-
-.achievement {
-    padding: 15px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid #555;
-}
-
-/* КЛАНЫ */
-.clan-container {
-    display: grid;
-    gap: 20px;
-}
-
-.clan-join {
-    background: rgba(255, 215, 0, 0.1);
-    padding: 20px;
-    border-radius: 15px;
-    border: 2px solid #FFD700;
-    text-align: center;
-}
-
-.clan-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.clan-btn {
-    background: rgba(255, 215, 0, 0.3);
-    color: white;
-    border: 2px solid #FFD700;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.clan-btn:hover {
-    background: rgba(255, 215, 0, 0.5);
-}
-
-/* ФУТЕР СТАТИСТИКА */
-.footer-stats {
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-    padding: 15px;
-    margin: 20px 0;
-    text-align: center;
-}
-
-.stat-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    font-size: 0.9rem;
-    color: #aaa;
-}
-
-.stat-row span {
-    color: white;
-    font-weight: bold;
-}
-
-/* РЕКЛАМА */
-.ad-container {
-    background: linear-gradient(135deg, #ff0080, #ff00ff);
-    border-radius: 15px;
-    padding: 15px;
-    margin: 20px 0;
-    text-align: center;
-}
-
-.ad-label {
-    color: white;
-    font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-}
-
-.ad-btn {
-    background: white;
-    color: #ff0080;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 5px;
-    width: calc(100% - 10px);
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-.ad-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
-}
-
-/* ИНФО ПАНЕЛЬ */
-.info-panel {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
-    padding: 15px;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #aaa;
-    border-left: 5px solid #00ff88;
-}
-
-.info-panel p {
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.info-panel i {
-    color: #00ff88;
 }
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 480px) {
-    .header h1 {
-        font-size: 1.5rem;
+    .mini-nav {
+        grid-template-columns: 1fr;
     }
     
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .theme-buttons {
+        grid-template-columns: 1fr;
     }
     
-    .card-img {
-        height: 200px;
+    .minigames-grid {
+        grid-template-columns: 1fr;
     }
     
-    .steal-btn {
-        font-size: 1.2rem;
-        padding: 15px;
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
     }
     
-    .tabs {
-        grid-template-columns: repeat(2, 2fr);
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
     }
     
-    .quick-actions {
+    .stats-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .battle-modes {
         grid-template-columns: 1fr;
     }
 }
-
-/* АНИМАЦИИ ДЛЯ РЕДКОСТЕЙ */
-.rarity-common { border-color: #808080 !important; }
-.rarity-rare { border-color: #4169E1 !important; }
-.rarity-epic { border-color: #9370DB !important; }
-.rarity-legendary { border-color: #FFD700 !important; animation: rarityGlow 2s infinite; }
-.rarity-mythic { border-color: #FF4500 !important; animation: rarityGlow 1s infinite; }
