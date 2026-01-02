@@ -735,4 +735,15 @@ body {
         padding: 12px 20px;
         font-size: 14px;
     }
+}.app-header {
+    height: 140px; /* примерная высота, подберите точную */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.pages-container {
+    padding-top: 140px; /* такая же высота как у app-header */
 }
