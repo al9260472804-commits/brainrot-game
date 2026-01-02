@@ -50,9 +50,7 @@ function saveGame() {
 // ========== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ==========
 function updateUI() {
     // Мини-статистика
-    document.getElementById('mini-energy').textContent = game.energy;
-    document.getElementById('mini-cards').textContent = game.cards.length;
-    document.getElementById('mini-gold').textContent = game.gold;
+   
     
     // Магазин и казино
     document.getElementById('shop-balance').textContent = game.gold;
