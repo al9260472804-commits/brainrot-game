@@ -113,33 +113,7 @@ body {
 }
 
 /* МИНИ-СТАТИСТИКА */
-.mini-stats {
-    display: flex;
-    justify-content: space-around;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 15px;
-    border-radius: 15px;
-    margin: 15px 0;
-    font-size: 14px;
-}
 
-.stat-item {
-    text-align: center;
-}
-
-.stat-value {
-    font-size: 18px;
-    font-weight: bold;
-    color: #00ff88;
-    display: block;
-}
-
-.stat-label {
-    color: #aaa;
-    font-size: 12px;
-    display: block;
-    margin-top: 2px;
-}
 
 /* БЫСТРЫЕ ДЕЙСТВИЯ */
 .quick-actions {
