@@ -8,252 +8,851 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="script.js" defer></script>
     <style>
-        @keyframes slideIn {
+        /* АНИМАЦИИ ДЛЯ СТРАНИЦ */
+        @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes slideInBottom {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        @keyframes rarityGlow {
-            0% { box-shadow: 0 0 5px currentColor; }
-            50% { box-shadow: 0 0 20px currentColor; }
-            100% { box-shadow: 0 0 5px currentColor; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* КЛАССЫ СТРАНИЦ */
+        .page {
+            display: none;
+            animation-duration: 0.3s;
+            animation-fill-mode: both;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* НАВИГАЦИОННОЕ МЕНЮ */
+        .main-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid #00ff88;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 5px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 10px;
+            width: 60px;
+        }
+        
+        .nav-btn i {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+        }
+        
+        .nav-btn.active {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .nav-btn:hover {
+            color: white;
+        }
+        
+        /* ЗАГОЛОВКИ СТРАНИЦ */
+        .page-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(26, 26, 46, 0.9);
+            border-bottom: 2px solid #00ff88;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn {
+            background: none;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .page-header h2 {
+            color: #00ff88;
+            flex-grow: 1;
+            margin: 0;
+        }
+        
+        /* СТИЛИ МАГАЗИНА */
+        .shop-tabs {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            margin: 0 15px 20px 15px;
+            gap: 5px;
+        }
+        
+        .shop-tab {
+            white-space: nowrap;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .shop-tab.active {
+            background: #00ff88;
+            color: black;
+            font-weight: bold;
+        }
+        
+        .shop-items-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 15px;
+        }
+        
+        .shop-item {
+            background: linear-gradient(135deg, #1a1a2e, #0f3460);
+            border-radius: 15px;
+            padding: 15px;
+            border: 2px solid #4169E1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .shop-item:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        }
+        
+        .shop-item-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 2px solid;
+            padding-bottom: 10px;
+        }
+        
+        .shop-item-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .shop-item-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .shop-item-price {
+            color: #ffd700;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .shop-item-desc {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+        
+        .buy-btn {
+            background: #ff0080;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* СТИЛИ КАЗИНО */
+        .casino-games {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .casino-game {
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 3px solid #FFD700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .casino-game:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .game-desc {
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        /* СТИЛИ АРЕНЫ */
+        .arena-modes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+        
+        .arena-mode {
+            background: rgba(255,0,0,0.1);
+            border: 2px solid #FF0000;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .arena-mode.active {
+            background: rgba(255,0,0,0.3);
+            transform: scale(1.05);
+        }
+        
+        .mode-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .mode-title {
+            font-weight: bold;
+            color: #FF0000;
+        }
+        
+        .mode-desc {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 480px) {
+            .shop-items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .casino-games {
+                grid-template-columns: 1fr;
+            }
+            
+            .arena-modes {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-btn span {
+                display: none;
+            }
+            
+            .nav-btn {
+                width: 50px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- ШАПКА СТАТИСТИКИ -->
-        <div class="header">
-            <h1><i class="fas fa-brain"></i> BRAINROT STEALER ULTIMATE</h1>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <i class="fas fa-bolt"></i>
-                    <span id="energy">100/100</span>
+        <!-- КОНТЕЙНЕР СТРАНИЦ -->
+        <div id="page-container">
+            <!-- Главная страница -->
+            <div id="main-page" class="page active">
+                <!-- КОНТЕНТ ИЗ ПРЕДЫДУЩЕЙ ВЕРСИИ -->
+                <div class="header">
+                    <h1><i class="fas fa-brain"></i> BRAINROT STEALER ULTIMATE</h1>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <i class="fas fa-bolt"></i>
+                            <span id="energy">100/100</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-trophy"></i>
+                            <span id="rating">1000</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-coins"></i>
+                            <span id="gold">0</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <i class="fas fa-trophy"></i>
-                    <span id="rating">1000</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-coins"></i>
-                    <span id="gold">0</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-layer-group"></i>
-                    <span id="cards-count">0</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-star"></i>
-                    Ур. <span id="level">1</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- КАРТОЧКА ДЛЯ КРАЖИ -->
-        <div class="main-card">
-            <div class="card-header">
-                <div class="card-rarity" id="card-rarity">LEGENDARY</div>
-                <div class="card-energy"><i class="fas fa-bolt"></i> <span id="card-cost">15</span></div>
-            </div>
-            <img id="card-image" src="https://api.dicebear.com/7.x/shapes/svg?seed=skibidi" class="card-img">
-            <div class="card-info">
-                <h2 id="card-title">SKIBIDI TOILET</h2>
-                <p id="card-desc">Легендарный туалет-голова</p>
-            </div>
-            <button id="steal-btn" class="steal-btn" onclick="stealCard()">
-                <i class="fas fa-hand-sparkles"></i> УКРАСТЬ КАРТУ
-            </button>
-        </div>
-
-        <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
-        <div class="quick-actions">
-            <button class="action-btn" onclick="claimDailyReward()">
-                <i class="fas fa-gift"></i> Ежедневная награда
-                <small id="daily-streak">0</small>
-            </button>
-            <button class="action-btn" onclick="openShop()">
-                <i class="fas fa-shopping-cart"></i> Магазин
-            </button>
-            <button class="action-btn" onclick="startPvP()">
-                <i class="fas fa-crosshairs"></i> PvP Бой
-            </button>
-            <button class="action-btn" onclick="copyReferralLink()">
-                <i class="fas fa-user-plus"></i> Пригласить
-            </button>
-        </div>
-
-        <!-- ТАБЫ -->
-        <div class="tabs">
-            <button class="tab-button active" onclick="showTab('collection')">
-                <i class="fas fa-layer-group"></i> Коллекция
-            </button>
-            <button class="tab-button" onclick="showTab('friends')">
-                <i class="fas fa-users"></i> Друзья
-            </button>
-            <button class="tab-button" onclick="showTab('achievements')">
-                <i class="fas fa-trophy"></i> Достижения
-            </button>
-            <button class="tab-button" onclick="showTab('clan')">
-                <i class="fas fa-shield-alt"></i> Клан
-            </button>
-        </div>
-
-        <!-- КОЛЛЕКЦИЯ -->
-        <div id="collection-tab" class="tab-content">
-            <h3><i class="fas fa-layer-group"></i> МОЯ КОЛЛЕКЦИЯ</h3>
-            <div id="collection" class="collection-grid">
-                <!-- Карточки загрузятся через JS -->
-            </div>
-        </div>
-
-        <!-- ДРУЗЬЯ -->
-        <div id="friends-tab" class="tab-content" style="display:none;">
-            <h3><i class="fas fa-users"></i> ДРУЗЬЯ И РЕФЕРАЛЫ</h3>
-            <div class="friends-container">
-                <div class="referral-box">
-                    <h4><i class="fas fa-link"></i> Ваша реферальная ссылка:</h4>
-                    <div class="referral-code" id="referral-code">BR-XXXXXXX</div>
-                    <button onclick="copyReferralLink()" class="copy-btn">
-                        <i class="fas fa-copy"></i> Копировать
+                <div class="main-card">
+                    <div class="card-header">
+                        <div class="card-rarity" id="card-rarity">LEGENDARY</div>
+                        <div class="card-energy"><i class="fas fa-bolt"></i> <span id="card-cost">15</span></div>
+                    </div>
+                    <img id="card-image" src="https://api.dicebear.com/7.x/shapes/svg?seed=skibidi" class="card-img">
+                    <div class="card-info">
+                        <h2 id="card-title">SKIBIDI TOILET</h2>
+                        <p id="card-desc">Легендарный туалет-голова</p>
+                    </div>
+                    <button id="steal-btn" class="steal-btn" onclick="stealCard()">
+                        <i class="fas fa-hand-sparkles"></i> УКРАСТЬ КАРТУ
                     </button>
-                    <p style="font-size:12px; color:#aaa; margin-top:10px;">
-                        Получите 500💰 за каждого приглашенного друга!
-                    </p>
+                </div>
+
+                <!-- БЫСТРЫЕ КНОПКИ ДЛЯ ПЕРЕХОДА -->
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="showPage('shop')">
+                        <i class="fas fa-shopping-cart"></i> Магазин
+                    </button>
+                    <button class="action-btn" onclick="showPage('casino')">
+                        <i class="fas fa-dice"></i> Казино
+                    </button>
+                    <button class="action-btn" onclick="showPage('battle')">
+                        <i class="fas fa-crosshairs"></i> Битва
+                    </button>
+                    <button class="action-btn" onclick="showPage('profile')">
+                        <i class="fas fa-user"></i> Профиль
+                    </button>
+                </div>
+
+                <!-- БЫСТРАЯ НАВИГАЦИЯ -->
+                <div class="mini-nav">
+                    <button onclick="showPage('arena')" class="mini-nav-btn">
+                        <i class="fas fa-crosshairs"></i> Арена
+                    </button>
+                    <button onclick="showPage('minigames')" class="mini-nav-btn">
+                        <i class="fas fa-gamepad"></i> Мини-игры
+                    </button>
+                    <button onclick="showPage('settings')" class="mini-nav-btn">
+                        <i class="fas fa-cog"></i> Настройки
+                    </button>
+                </div>
+
+                <!-- ОСТАЛЬНОЙ КОНТЕНТ... -->
+            </div>
+
+            <!-- СТРАНИЦА МАГАЗИНА (загрузится через JS) -->
+            <div id="shop-page" class="page"></div>
+            
+            <!-- СТРАНИЦА КАЗИНО (загрузится через JS) -->
+            <div id="casino-page" class="page"></div>
+            
+            <!-- СТРАНИЦА БИТВЫ -->
+            <div id="battle-page" class="page">
+                <div class="page-header">
+                    <button class="back-btn" onclick="showPage('main')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2><i class="fas fa-crosshairs"></i> БИТВА</h2>
                 </div>
                 
-                <div class="friends-list">
-                    <h4><i class="fas fa-user-friends"></i> Друзья (${game?.friends?.length || 0}):</h4>
-                    <div id="friends-display">
-                        <div style="color:#aaa; text-align:center; padding:20px;">
-                            У вас пока нет друзей<br>
-                            <small>Пригласите друзей по реферальной ссылке</small>
+                <div class="battle-content">
+                    <div class="battle-modes">
+                        <div class="battle-mode" onclick="startPvP()">
+                            <h3>⚔ PvP Дуэль</h3>
+                            <p>Сразитесь 1 на 1 с другим игроком</p>
+                            <div class="battle-reward">Награда: 100-500💰</div>
+                        </div>
+                        
+                        <div class="battle-mode" onclick="startTournament()">
+                            <h3>🏆 Турнир</h3>
+                            <p>16 игроков, последний выживший</p>
+                            <div class="battle-reward">Приз: 5000💰</div>
+                        </div>
+                        
+                        <div class="battle-mode" onclick="startClanWar()">
+                            <h3>🛡 Клановая война</h3>
+                            <p>5 vs 5, захват территории</p>
+                            <div class="battle-reward">Награда клану: 10000💰</div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ДОСТИЖЕНИЯ -->
-        <div id="achievements-tab" class="tab-content" style="display:none;">
-            <h3><i class="fas fa-trophy"></i> ДОСТИЖЕНИЯ</h3>
-            <div class="achievements-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${(game?.achievements?.length || 0) / ACHIEVEMENTS?.length * 100}%"></div>
-                </div>
-                <div class="progress-text">
-                    ${game?.achievements?.length || 0} из ${ACHIEVEMENTS?.length || 5} достижений
-                </div>
-                <div id="achievements-grid" class="achievements-grid">
-                    <!-- Достижения загрузятся через JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- КЛАН -->
-        <div id="clan-tab" class="tab-content" style="display:none;">
-            <h3><i class="fas fa-shield-alt"></i> КЛАНЫ И ВОЙНЫ</h3>
-            <div class="clan-container">
-                <div class="clan-join">
-                    <h4>Вступите в клан или создайте свой!</h4>
-                    <p>Участвуйте в клановых войнах и получайте награды</p>
                     
-                    <div class="clan-buttons">
-                        <button class="clan-btn" onclick="createClan()">
-                            <i class="fas fa-plus"></i> Создать клан
-                        </button>
-                        <button class="clan-btn" onclick="joinClan()">
-                            <i class="fas fa-search"></i> Найти клан
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="clan-wars">
-                    <h4><i class="fas fa-crosshairs"></i> Активные войны:</h4>
-                    <div class="war-list">
-                        <div class="war-item">
-                            <div>Skibidi Gang vs Toilet Clan</div>
-                            <div class="war-timer">12:45:32</div>
+                    <div class="battle-stats">
+                        <h3>Ваша статистика:</h3>
+                        <div class="stats-grid">
+                            <div>Побед: <span id="battle-wins">0</span></div>
+                            <div>Поражений: <span id="battle-losses">0</span></div>
+                            <div>K/D: <span id="battle-kd">0.00</span></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- СТАТИСТИКА ВНИЗУ -->
-        <div class="footer-stats">
-            <div class="stat-row">
-                <div>Всего краж: <span id="total-steals">0</span></div>
-                <div>Успешных: <span id="success-steals">0</span></div>
-                <div>Опыт: <span id="exp">0/100</span></div>
+            <!-- СТРАНИЦА ПРОФИЛЯ -->
+            <div id="profile-page" class="page">
+                <div class="page-header">
+                    <button class="back-btn" onclick="showPage('main')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2><i class="fas fa-user"></i> ПРОФИЛЬ</h2>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.random()}" id="profile-avatar">
+                            <button onclick="changeAvatar()" class="avatar-change">✏️</button>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="profile-name">Игрок #${Math.floor(Math.random()*10000)}</h3>
+                            <div class="profile-level">
+                                Уровень: <span id="profile-level">1</span>
+                            </div>
+                            <div class="profile-rating">
+                                Рейтинг: <span id="profile-rating">1000</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <h3><i class="fas fa-chart-bar"></i> Статистика</h3>
+                        <div class="stats-list">
+                            <div>Всего карт: <span id="profile-total-cards">0</span></div>
+                            <div>Уникальных: <span id="profile-unique-cards">0</span></div>
+                            <div>Всего краж: <span id="profile-total-steals">0</span></div>
+                            <div>Успешных: <span id="profile-success-steals">0</span></div>
+                            <div>Процент успеха: <span id="profile-success-rate">0%</span></div>
+                            <div>В игре: <span id="profile-play-time">0 дней</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-achievements">
+                        <h3><i class="fas fa-trophy"></i> Достижения</h3>
+                        <div id="profile-achievements-list">
+                            <!-- Загрузится через JS -->
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- ОСТАЛЬНЫЕ СТРАНИЦЫ ЗАГРУЗЯТСЯ ЧЕРЕЗ JS -->
         </div>
 
-        <!-- РЕКЛАМА (МОК) -->
-        <div class="ad-container">
-            <div class="ad-label">📺 Реклама</div>
-            <button class="ad-btn" onclick="watchAdForGold()">
-                <i class="fas fa-ad"></i> Посмотреть рекламу (+50💰)
+        <!-- НАВИГАЦИОННОЕ МЕНЮ ВНИЗУ -->
+        <nav class="main-nav">
+            <button class="nav-btn active" onclick="showPage('main')">
+                <i class="fas fa-home"></i>
+                <span>Главная</span>
             </button>
-            <button class="ad-btn" onclick="watchAdForEnergy()">
-                <i class="fas fa-bolt"></i> Посмотреть рекламу (+30⚡)
+            <button class="nav-btn" onclick="showPage('shop')">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Магазин</span>
             </button>
-        </div>
-
-        <!-- ИНФО ПАНЕЛЬ -->
-        <div class="info-panel">
-            <p><i class="fas fa-info-circle"></i> Обновление 2.0: Добавлены 30+ карт, система PvP, кланы и достижения!</p>
-            <p><i class="fas fa-bolt"></i> Энергия восстанавливается: 1⚡/30сек</p>
-        </div>
+            <button class="nav-btn" onclick="showPage('casino')">
+                <i class="fas fa-dice"></i>
+                <span>Казино</span>
+            </button>
+            <button class="nav-btn" onclick="showPage('battle')">
+                <i class="fas fa-crosshairs"></i>
+                <span>Битва</span>
+            </button>
+            <button class="nav-btn" onclick="showPage('profile')">
+                <i class="fas fa-user"></i>
+                <span>Профиль</span>
+            </button>
+        </nav>
     </div>
 
-    <!-- АУДИО ДЛЯ ЗВУКОВ (СКРЫТО) -->
-    <audio id="steal-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-ball-tap-2073.mp3" preload="auto"></audio>
-    <audio id="win-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
-    
+    <!-- СКРИПТЫ ДЛЯ СТРАНИЦ -->
     <script>
-        // Вспомогательные функции для HTML
-        function watchAdForGold() {
-            alert("🎬 Реклама загружается...\n(В реальном приложении здесь будет реклама)");
-            setTimeout(() => {
-                game.gold += 50;
-                updateUI();
-                showNotification("✅ Реклама просмотрена!", "+50💰");
-            }, 2000);
+        // Функции для страниц
+        function changeAvatar() {
+            const avatars = [
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=skibidi',
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=toilet',
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=sigma',
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=gyatt',
+                'https://api.dicebear.com/7.x/avataaars/svg?seed=fanum'
+            ];
+            
+            const randomAvatar = avatars[Math.floor(Math.random() * avatars.length)];
+            document.getElementById('profile-avatar').src = randomAvatar;
+            showNotification("✅ Аватар изменен!", "Новый мемный аватар!");
         }
         
-        function watchAdForEnergy() {
-            alert("🎬 Реклама загружается...");
-            setTimeout(() => {
-                game.energy += 30;
-                if (game.energy > game.maxEnergy) game.energy = game.maxEnergy;
-                updateUI();
-                showNotification("✅ Реклама просмотрена!", "+30⚡");
-            }, 2000);
+        function startTournament() {
+            if (game.energy < 50) {
+                showNotification("❌ Недостаточно энергии", "Нужно 50⚡");
+                return;
+            }
+            
+            game.energy -= 50;
+            
+            // Симуляция турнира
+            const rounds = ['1/16', '1/8', '1/4', '1/2', 'Финал'];
+            let currentRound = 0;
+            
+            const tournamentInterval = setInterval(() => {
+                if (currentRound >= rounds.length) {
+                    clearInterval(tournamentInterval);
+                    
+                    // 70% шанс выиграть турнир
+                    if (Math.random() < 0.7) {
+                        const reward = 5000;
+                        game.gold += reward;
+                        game.rating += 500;
+                        showNotification("🏆 ПОБЕДА В ТУРНИРЕ!", `Вы выиграли ${reward}💰!\n+500⭐`);
+                    } else {
+                        showNotification("💀 Вылетели", "Вы проиграли в полуфинале");
+                    }
+                    
+                    updateUI();
+                    return;
+                }
+                
+                showNotification(`🎮 Турнир: ${rounds[currentRound]}`, "Идет бой...");
+                currentRound++;
+            }, 1000);
         }
         
-        function createClan() {
-            const name = prompt("Введите название клана:");
-            if (name && name.length > 2) {
-                game.clan = { name: name, members: 1, rating: game.rating };
-                showNotification("🛡 Клан создан!", `Добро пожаловать в "${name}"`);
+        function startClanWar() {
+            if (!game.clan) {
+                showNotification("❌ Нужен клан", "Вступите в клан сначала");
+                return;
+            }
+            
+            showNotification("🛡 Начало клановой войны", "Сбор участников...");
+            
+            setTimeout(() => {
+                const win = Math.random() < 0.5;
+                
+                if (win) {
+                    const reward = 10000;
+                    game.gold += 2000; // Личная награда
+                    game.rating += 300;
+                    showNotification("🛡 ПОБЕДА КЛАНА!", `Клан получает ${reward}💰\nВаша доля: 2000💰`);
+                } else {
+                    showNotification("💀 Поражение", "Ваш клан проиграл войну");
+                }
+                
                 updateUI();
+            }, 3000);
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            // Создаем отсутствующие страницы
+            createMissingPages();
+            
+            // Устанавливаем аватар по умолчанию
+            document.getElementById('profile-avatar').src = 
+                `https://api.dicebear.com/7.x/avataaars/svg?seed=${Date.now()}`;
+        });
+        
+        function createMissingPages() {
+            const pagesContainer = document.getElementById('page-container');
+            
+            // Страница настроек
+            if (!document.getElementById('settings-page')) {
+                pagesContainer.innerHTML += `
+                    <div id="settings-page" class="page">
+                        <div class="page-header">
+                            <button class="back-btn" onclick="showPage('main')">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2><i class="fas fa-cog"></i> НАСТРОЙКИ</h2>
+                        </div>
+                        
+                        <div class="settings-content">
+                            <div class="settings-section">
+                                <h3><i class="fas fa-volume-up"></i> Звук</h3>
+                                <div class="settings-option">
+                                    <span>Громкость эффектов</span>
+                                    <input type="range" min="0" max="100" value="50" class="slider">
+                                </div>
+                                <div class="settings-option">
+                                    <span>Громкость музыки</span>
+                                    <input type="range" min="0" max="100" value="30" class="slider">
+                                </div>
+                            </div>
+                            
+                            <div class="settings-section">
+                                <h3><i class="fas fa-palette"></i> Внешний вид</h3>
+                                <div class="theme-buttons">
+                                    <button class="theme-btn" onclick="changeTheme('dark')">
+                                        🌙 Темная
+                                    </button>
+                                    <button class="theme-btn" onclick="changeTheme('light')">
+                                        ☀️ Светлая
+                                    </button>
+                                    <button class="theme-btn" onclick="changeTheme('neon')">
+                                        🌈 Неоновая
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-section">
+                                <h3><i class="fas fa-gamepad"></i> Игровые настройки</h3>
+                                <div class="settings-option">
+                                    <span>Вибрация при краже</span>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="settings-option">
+                                    <span>Анимации</span>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-section">
+                                <h3><i class="fas fa-database"></i> Данные</h3>
+                                <button onclick="exportSave()" class="data-btn">
+                                    <i class="fas fa-download"></i> Экспорт сохранения
+                                </button>
+                                <button onclick="importSave()" class="data-btn">
+                                    <i class="fas fa-upload"></i> Импорт сохранения
+                                </button>
+                                <button onclick="resetGame()" class="data-btn danger">
+                                    <i class="fas fa-trash"></i> Сбросить игру
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Страница мини-игр
+            if (!document.getElementById('minigames-page')) {
+                pagesContainer.innerHTML += `
+                    <div id="minigames-page" class="page">
+                        <div class="page-header">
+                            <button class="back-btn" onclick="showPage('main')">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2><i class="fas fa-gamepad"></i> МИНИ-ИГРЫ</h2>
+                        </div>
+                        
+                        <div class="minigames-grid">
+                            <div class="minigame" onclick="startMemoryGame()">
+                                <div class="minigame-icon">🧠</div>
+                                <div class="minigame-title">Мемори</div>
+                                <div class="minigame-desc">Найди пары мемов</div>
+                            </div>
+                            
+                            <div class="minigame" onclick="startQuiz()">
+                                <div class="minigame-icon">❓</div>
+                                <div class="minigame-title">Викторина</div>
+                                <div class="minigame-desc">Знаешь ли ты мемы?</div>
+                            </div>
+                            
+                            <div class="minigame" onclick="startClicker()">
+                                <div class="minigame-icon">👆</div>
+                                <div class="minigame-title">Кликер</div>
+                                <div class="minigame-desc">Кликай по туалетам!</div>
+                            </div>
+                            
+                            <div class="minigame" onclick="startMatch3()">
+                                <div class="minigame-icon">🔵</div>
+                                <div class="minigame-title">Match-3</div>
+                                <div class="minigame-desc">Собери линии мемов</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Страница арены
+            if (!document.getElementById('arena-page')) {
+                pagesContainer.innerHTML += `
+                    <div id="arena-page" class="page">
+                        <div class="page-header">
+                            <button class="back-btn" onclick="showPage('main')">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h2><i class="fas fa-crosshairs"></i> АРЕНА</h2>
+                        </div>
+                        
+                        <div class="arena-content">
+                            <div class="arena-info">
+                                <h3>⚔ Рейтинговая арена</h3>
+                                <p>Сражайтесь с игроками аналогичного рейтинга</p>
+                                <div class="arena-rating">
+                                    Ваш рейтинг: <span id="arena-rating">${game.rating}</span>
+                                </div>
+                            </div>
+                            
+                            <button onclick="findArenaOpponent()" class="arena-find-btn">
+                                <i class="fas fa-search"></i> Найти противника
+                            </button>
+                            
+                            <div class="arena-leaderboard">
+                                <h3>🏆 Топ арены</h3>
+                                <div id="arena-leaderboard-list">
+                                    <div class="leaderboard-item">
+                                        <span class="rank">1</span>
+                                        <span class="name">Skibidi_God</span>
+                                        <span class="rating">2500⭐</span>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <span class="rank">2</span>
+                                        <span class="name">Toilet_King</span>
+                                        <span class="rating">2300⭐</span>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <span class="rank">3</span>
+                                        <span class="name">Sigma_Male</span>
+                                        <span class="rating">2100⭐</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
         }
         
-        function joinClan() {
-            const clans = ["Skibidi Gang", "Toilet Clan", "Sigma Army", "Ohio Legends"];
-            const clan = clans[Math.floor(Math.random() * clans.length)];
-            game.clan = { name: clan, members: Math.floor(Math.random() * 50) + 10 };
-            showNotification("🛡 Вы вступили в клан!", `Клан: ${clan}`);
-            updateUI();
+        // Функции для мини-игр
+        function startMemoryGame() {
+            showPage('main');
+            showNotification("🧠 Игра 'Мемори'", "Скоро будет добавлена!");
+        }
+        
+        function startQuiz() {
+            showPage('main');
+            showNotification("❓ Викторина", "Скоро будет добавлена!");
+        }
+        
+        function startClicker() {
+            showPage('main');
+            showNotification("👆 Кликер", "Скоро будет добавлена!");
+        }
+        
+        function findArenaOpponent() {
+            showNotification("🔍 Поиск противника", "Ищем соперника с рейтингом " + game.rating + "...");
+            
+            setTimeout(() => {
+                const opponentRating = game.rating + Math.floor(Math.random() * 400) - 200;
+                const winChance = 0.5 + (game.rating - opponentRating) / 1000;
+                
+                if (Math.random() < winChance) {
+                    const ratingGain = Math.max(10, Math.floor((opponentRating - game.rating) / 10));
+                    game.rating += ratingGain;
+                    game.gold += 100;
+                    showNotification("🎉 ПОБЕДА!", `Вы победили игрока с рейтингом ${opponentRating}\n+${ratingGain}⭐ +100💰`);
+                } else {
+                    const ratingLoss = Math.max(5, Math.floor((game.rating - opponentRating) / 20));
+                    game.rating -= ratingLoss;
+                    showNotification("💀 Поражение", `Проиграли игроку с рейтингом ${opponentRating}\n-${ratingLoss}⭐`);
+                }
+                
+                updateUI();
+            }, 2000);
+        }
+        
+        // Экспорт/импорт сохранения
+        function exportSave() {
+            const saveData = JSON.stringify(game);
+            const blob = new Blob([saveData], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `brainrot_save_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showNotification("💾 Сохранение экспортировано", "Файл скачан");
+        }
+        
+        function importSave() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    try {
+                        const saveData = JSON.parse(event.target.result);
+                        game = { ...game, ...saveData };
+                        localStorage.setItem('brainrot_ultimate_v2', JSON.stringify(game));
+                        updateUI();
+                        showNotification("💾 Сохранение загружено", "Игра обновлена!");
+                    } catch(err) {
+                        showNotification("❌ Ошибка", "Неверный формат файла");
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+        
+        function resetGame() {
+            if (confirm("⚠️ Вы уверены? Это удалит все ваши данные!")) {
+                localStorage.removeItem('brainrot_ultimate_v2');
+                location.reload();
+            }
+        }
+        
+        function changeTheme(theme) {
+            const themes = {
+                dark: ['#0f0c29', '#302b63'],
+                light: ['#ffffff', '#f0f0f0'],
+                neon: ['#ff00ff', '#00ffff']
+            };
+            
+            document.body.style.background = `linear-gradient(135deg, ${themes[theme][0]}, ${themes[theme][1]})`;
+            showNotification("🎨 Тема изменена", `Активирована ${theme} тема`);
         }
     </script>
 </body>
