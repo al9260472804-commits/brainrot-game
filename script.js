@@ -20,7 +20,7 @@ const CARDS = [
         desc: "Легендарный туалет-голова", 
         cost: 15, 
         rarity: "legendary", 
-        image: "https://ibb.co/My3FLpTG" 
+        image: "https://i.postimg.cc/FRvLpwbn/7b34bc0e90379c9ae9c0a862ba990f96.jpg" 
     },
     { 
         id: 2, 
