@@ -20,7 +20,7 @@ const CARDS = [
         desc: "Легендарный туалет-голова", 
         cost: 15, 
         rarity: "legendary", 
-        image: "https://i.imgur.com/xK9T4hG.png" 
+        image: "https://ibb.co/My3FLpTG" 
     },
     { 
         id: 2, 
