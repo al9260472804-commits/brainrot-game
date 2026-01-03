@@ -585,3 +585,143 @@ window.setVolume = setVolume;
 window.exportSave = exportSave;
 window.importSave = importSave;
 window.resetGame = resetGame;
+// ========== ОБУЧАЛКА ==========
+let currentSlide = 1;
+const totalSlides = 5;
+
+// Проверяем, нужно ли показывать обучалку
+function checkTutorial() {
+    const tutorialCompleted = localStorage.getItem('brainrot_tutorial_completed');
+    if (!tutorialCompleted) {
+        // Показываем обучалку
+        document.getElementById('tutorial-modal').classList.add('active');
+        positionHighlights();
+    }
+}
+
+// Позиционируем подсветки
+function positionHighlights() {
+    const stealBtn = document.querySelector('.steal-btn');
+    const statsBtn = document.querySelector('.stats-btn');
+    
+    if (stealBtn && stealBtn.getBoundingClientRect().width > 0) {
+        const rect = stealBtn.getBoundingClientRect();
+        const highlight = document.getElementById('highlight-steal-btn');
+        highlight.style.width = rect.width + 'px';
+        highlight.style.height = rect.height + 'px';
+        highlight.style.left = rect.left + 'px';
+        highlight.style.top = rect.top + 'px';
+    }
+    
+    if (statsBtn && statsBtn.getBoundingClientRect().width > 0) {
+        const rect = statsBtn.getBoundingClientRect();
+        const highlight = document.getElementById('highlight-stats-btn');
+        highlight.style.width = rect.width + 'px';
+        highlight.style.height = rect.height + 'px';
+        highlight.style.left = rect.left + 'px';
+        highlight.style.top = rect.top + 'px';
+    }
+}
+
+// Следующий слайд
+function nextSlide() {
+    if (currentSlide < totalSlides) {
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide++;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        
+        // Обновляем позиции подсветок при переходе
+        setTimeout(positionHighlights, 300);
+    }
+}
+
+// Предыдущий слайд
+function prevSlide() {
+    if (currentSlide > 1) {
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide--;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        
+        // Обновляем позиции подсветок при переходе
+        setTimeout(positionHighlights, 300);
+    }
+}
+
+// Пропустить обучалку
+function skipTutorial() {
+    localStorage.setItem('brainrot_tutorial_completed', 'true');
+    document.getElementById('tutorial-modal').classList.remove('active');
+    showNotification('🎮 Добро пожаловать в Brainrot Stealer!', 'info');
+}
+
+// Начать игру
+function startGame() {
+    localStorage.setItem('brainrot_tutorial_completed', 'true');
+    document.getElementById('tutorial-modal').classList.remove('active');
+    showNotification('🎮 Удачи в кражах! Собери все карты!', 'success');
+}
+
+// Показывать кнопку перезапуска обучалки в настройках
+function addTutorialReset() {
+    // Добавим кнопку в настройки
+    const settingsSection = document.querySelector('.settings-section:last-child');
+    if (settingsSection) {
+        const tutorialBtn = document.createElement('button');
+        tutorialBtn.className = 'data-btn';
+        tutorialBtn.style.background = '#00ff88';
+        tutorialBtn.style.color = '#000';
+        tutorialBtn.innerHTML = '<i class="fas fa-graduation-cap"></i> Пройти обучение снова';
+        tutorialBtn.onclick = function() {
+            localStorage.removeItem('brainrot_tutorial_completed');
+            location.reload();
+        };
+        settingsSection.appendChild(tutorialBtn);
+    }
+}
+
+// ========== ОБНОВЛЯЕМ ФУНКЦИЮ ИНИЦИАЛИЗАЦИИ ==========
+// Вместо этого:
+// window.addEventListener('load', function() {
+//     loadGame();
+//     updateCardDisplay();
+//     ...
+// });
+
+// Делаем так:
+window.addEventListener('load', function() {
+    loadGame();
+    updateCardDisplay();
+    
+    // Добавляем кнопку перезапуска обучалки
+    addTutorialReset();
+    
+    // Проверяем обучалку (запускается ТОЛЬКО если игра не загружена)
+    const saved = localStorage.getItem('brainrot_final');
+    if (!saved) {
+        checkTutorial();
+    }
+    
+    // Восстановление энергии каждые 30 секунд
+    setInterval(() => {
+        if (game.energy < game.maxEnergy) {
+            game.energy++;
+            updateUI();
+        }
+    }, 30000);
+    
+    // Показываем приветственное уведомление только если не показывали обучалку
+    const tutorialShown = localStorage.getItem('brainrot_tutorial_completed');
+    if (tutorialShown) {
+        showNotification('🎮 Добро пожаловать в Brainrot Stealer!', 'info');
+    }
+});
+
+// ========== ДОБАВЛЯЕМ ФУНКЦИИ В ГЛОБАЛЬНУЮ ОБЛАСТЬ ==========
+window.nextSlide = nextSlide;
+window.prevSlide = prevSlide;
+window.skipTutorial = skipTutorial;
+window.startGame = startGame;
+
+// Также добавляем обработчик ресайза для корректировки подсветок
+window.addEventListener('resize', positionHighlights);
+window.addEventListener('scroll', positionHighlights);
