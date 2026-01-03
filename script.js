@@ -595,55 +595,80 @@ function checkTutorial() {
     if (!tutorialCompleted) {
         // Показываем обучалку
         document.getElementById('tutorial-modal').classList.add('active');
-        positionHighlights();
+        // Даем время на рендеринг страницы
+        setTimeout(positionHighlights, 100);
     }
 }
 
-// Позиционируем подсветки
+// Позиционируем подсветки (ИСПРАВЛЕННАЯ ВЕРСИЯ)
 function positionHighlights() {
+    // Подсветка для кнопки кражи (слайд 2)
     const stealBtn = document.querySelector('.steal-btn');
-    const statsBtn = document.querySelector('.stats-btn');
+    const highlightSteal = document.getElementById('highlight-steal-btn');
     
-    if (stealBtn && stealBtn.getBoundingClientRect().width > 0) {
+    if (stealBtn && highlightSteal && currentSlide === 2) {
         const rect = stealBtn.getBoundingClientRect();
-        const highlight = document.getElementById('highlight-steal-btn');
-        highlight.style.width = rect.width + 'px';
-        highlight.style.height = rect.height + 'px';
-        highlight.style.left = rect.left + 'px';
-        highlight.style.top = rect.top + 'px';
+        const modalContent = document.querySelector('.tutorial-content');
+        const modalRect = modalContent.getBoundingClientRect();
+        
+        // Позиционируем относительно окна обучалки
+        highlightSteal.style.width = (rect.width + 20) + 'px';
+        highlightSteal.style.height = (rect.height + 20) + 'px';
+        highlightSteal.style.left = (rect.left - modalRect.left) + 'px';
+        highlightSteal.style.top = (rect.top - modalRect.top) + 'px';
+        highlightSteal.style.display = 'block';
+    } else if (highlightSteal) {
+        highlightSteal.style.display = 'none';
     }
     
-    if (statsBtn && statsBtn.getBoundingClientRect().width > 0) {
+    // Подсветка для кнопки статистики (слайд 3)
+    const statsBtn = document.querySelector('.stats-btn');
+    const highlightStats = document.getElementById('highlight-stats-btn');
+    
+    if (statsBtn && highlightStats && currentSlide === 3) {
         const rect = statsBtn.getBoundingClientRect();
-        const highlight = document.getElementById('highlight-stats-btn');
-        highlight.style.width = rect.width + 'px';
-        highlight.style.height = rect.height + 'px';
-        highlight.style.left = rect.left + 'px';
-        highlight.style.top = rect.top + 'px';
+        const modalContent = document.querySelector('.tutorial-content');
+        const modalRect = modalContent.getBoundingClientRect();
+        
+        highlightStats.style.width = (rect.width + 20) + 'px';
+        highlightStats.style.height = (rect.height + 20) + 'px';
+        highlightStats.style.left = (rect.left - modalRect.left) + 'px';
+        highlightStats.style.top = (rect.top - modalRect.top) + 'px';
+        highlightStats.style.display = 'block';
+    } else if (highlightStats) {
+        highlightStats.style.display = 'none';
     }
 }
 
-// Следующий слайд
+// Следующий слайд (ИСПРАВЛЕННАЯ ВЕРСИЯ)
 function nextSlide() {
     if (currentSlide < totalSlides) {
         document.getElementById(`slide-${currentSlide}`).classList.remove('active');
         currentSlide++;
         document.getElementById(`slide-${currentSlide}`).classList.add('active');
         
-        // Обновляем позиции подсветок при переходе
-        setTimeout(positionHighlights, 300);
+        // Обновляем позиции подсветок
+        setTimeout(() => {
+            positionHighlights();
+            // Прокручиваем к началу слайда
+            document.querySelector('.tutorial-content').scrollTop = 0;
+        }, 10);
     }
 }
 
-// Предыдущий слайд
+// Предыдущий слайд (ИСПРАВЛЕННАЯ ВЕРСИЯ)
 function prevSlide() {
     if (currentSlide > 1) {
         document.getElementById(`slide-${currentSlide}`).classList.remove('active');
         currentSlide--;
         document.getElementById(`slide-${currentSlide}`).classList.add('active');
         
-        // Обновляем позиции подсветок при переходе
-        setTimeout(positionHighlights, 300);
+        // Обновляем позиции подсветок
+        setTimeout(() => {
+            positionHighlights();
+            // Прокручиваем к началу слайда
+            document.querySelector('.tutorial-content').scrollTop = 0;
+        }, 10);
     }
 }
 
@@ -661,33 +686,44 @@ function startGame() {
     showNotification('🎮 Удачи в кражах! Собери все карты!', 'success');
 }
 
-// Показывать кнопку перезапуска обучалки в настройках
-function addTutorialReset() {
-    // Добавим кнопку в настройки
-    const settingsSection = document.querySelector('.settings-section:last-child');
-    if (settingsSection) {
-        const tutorialBtn = document.createElement('button');
-        tutorialBtn.className = 'data-btn';
-        tutorialBtn.style.background = '#00ff88';
-        tutorialBtn.style.color = '#000';
-        tutorialBtn.innerHTML = '<i class="fas fa-graduation-cap"></i> Пройти обучение снова';
-        tutorialBtn.onclick = function() {
-            localStorage.removeItem('brainrot_tutorial_completed');
-            location.reload();
-        };
-        settingsSection.appendChild(tutorialBtn);
+// Альтернативный вариант: Упрощенная обучалка БЕЗ подсветок
+function setupSimpleTutorial() {
+    const tutorialCompleted = localStorage.getItem('brainrot_tutorial_completed');
+    if (!tutorialCompleted) {
+        // Упрощенная версия - просто показываем модалку
+        document.getElementById('tutorial-modal').classList.add('active');
+        
+        // Убираем подсветки совсем
+        document.querySelectorAll('.tutorial-highlight').forEach(el => {
+            el.style.display = 'none';
+        });
     }
 }
 
-// ========== ОБНОВЛЯЕМ ФУНКЦИЮ ИНИЦИАЛИЗАЦИИ ==========
-// Вместо этого:
-// window.addEventListener('load', function() {
-//     loadGame();
-//     updateCardDisplay();
-//     ...
-// });
+// Показывать кнопку перезапуска обучалки в настройках
+function addTutorialReset() {
+    const settingsSection = document.querySelector('.settings-section:last-child');
+    if (settingsSection) {
+        // Проверяем, не добавили ли уже кнопку
+        if (!document.getElementById('tutorial-reset-btn')) {
+            const tutorialBtn = document.createElement('button');
+            tutorialBtn.id = 'tutorial-reset-btn';
+            tutorialBtn.className = 'data-btn';
+            tutorialBtn.style.background = '#00ff88';
+            tutorialBtn.style.color = '#000';
+            tutorialBtn.innerHTML = '<i class="fas fa-graduation-cap"></i> Пройти обучение снова';
+            tutorialBtn.onclick = function() {
+                if (confirm('Пройти обучение заново?')) {
+                    localStorage.removeItem('brainrot_tutorial_completed');
+                    location.reload();
+                }
+            };
+            settingsSection.appendChild(tutorialBtn);
+        }
+    }
+}
 
-// Делаем так:
+// ========== ИНИЦИАЛИЗАЦИЯ ==========
 window.addEventListener('load', function() {
     loadGame();
     updateCardDisplay();
@@ -695,33 +731,33 @@ window.addEventListener('load', function() {
     // Добавляем кнопку перезапуска обучалки
     addTutorialReset();
     
-    // Проверяем обучалку (запускается ТОЛЬКО если игра не загружена)
+    // Проверяем обучалку (ЗАМЕНИТЕ checkTutorial() на setupSimpleTutorial() если не работает)
     const saved = localStorage.getItem('brainrot_final');
     if (!saved) {
-        checkTutorial();
+        // Используйте ЭТУ функцию если подсветки не работают:
+        setupSimpleTutorial();
+        // Или эту если хотите с подсветками:
+        // checkTutorial();
     }
     
-    // Восстановление энергии каждые 30 секунд
+    // Восстановление энергии
     setInterval(() => {
         if (game.energy < game.maxEnergy) {
             game.energy++;
             updateUI();
         }
     }, 30000);
-    
-    // Показываем приветственное уведомление только если не показывали обучалку
-    const tutorialShown = localStorage.getItem('brainrot_tutorial_completed');
-    if (tutorialShown) {
-        showNotification('🎮 Добро пожаловать в Brainrot Stealer!', 'info');
-    }
 });
 
-// ========== ДОБАВЛЯЕМ ФУНКЦИИ В ГЛОБАЛЬНУЮ ОБЛАСТЬ ==========
+// Обновляем позиции при ресайзе
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(positionHighlights, 250);
+});
+
+// Добавляем функции в глобальную область
 window.nextSlide = nextSlide;
 window.prevSlide = prevSlide;
 window.skipTutorial = skipTutorial;
 window.startGame = startGame;
-
-// Также добавляем обработчик ресайза для корректировки подсветок
-window.addEventListener('resize', positionHighlights);
-window.addEventListener('scroll', positionHighlights);
