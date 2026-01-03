@@ -670,223 +670,190 @@ body {
     to { transform: translateX(0); opacity: 1; }
 }
 
-/* АДАПТИВНОСТЬ */
-@media (max-width: 480px) {
-    .container {
-        padding: 5px;
-        padding-bottom: 70px;
-    }
-    
-    .steal-btn {
-        padding: 18px;
-        font-size: 18px;
-    }
-    
-    .quick-actions {
-        grid-template-columns: 1fr;
-    }
-    
-    .cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .nav-btn {
-        font-size: 11px;
-        min-width: 50px;
-    }
-    
-    .nav-btn i {
-        font-size: 16px;
-    }
-    
-    .stats-btn {
-        top: 10px;
-        right: 10px;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-    }
-    
-    .theme-buttons {
-        grid-template-columns: 1fr;
-    }
-    
-    .full-collection-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* ========== ПЕРСОНАЖ-ГИД ========== */
+#tutorial-guide {
+    z-index: 9999;
 }
 
-/* ПРОКРУТКА */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-    background: #00ff88;
-    border-radius: 4px;
-}
-/* ========== ИНТЕРАКТИВНАЯ ОБУЧАЛКА ========== */
-#interactive-tutorial {
+.guide-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9998;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
 }
 
-.tutorial-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(3px);
-}
-
-.tutorial-step {
-    position: absolute;
-    z-index: 9999;
-}
-
-.tutorial-arrow {
-    position: absolute;
-    z-index: 10000;
-}
-
-.arrow-line {
-    background: #00ff88;
-    position: absolute;
-}
-
-.arrow-head {
-    width: 0;
-    height: 0;
-    position: absolute;
-    border-style: solid;
-}
-
-/* Стрелка сверху */
-.top-arrow .arrow-line {
-    width: 4px;
-    height: 50px;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.top-arrow .arrow-head {
-    border-width: 0 10px 15px 10px;
-    border-color: transparent transparent #00ff88 transparent;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Стрелка справа */
-.right-arrow .arrow-line {
-    width: 60px;
-    height: 4px;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.right-arrow .arrow-head {
-    border-width: 10px 0 10px 15px;
-    border-color: transparent transparent transparent #00ff88;
-    left: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* Стрелка снизу */
-.bottom-arrow .arrow-line {
-    width: 4px;
-    height: 50px;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.bottom-arrow .arrow-head {
-    border-width: 15px 10px 0 10px;
-    border-color: #00ff88 transparent transparent transparent;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Всплывающее окно подсказки */
-.tutorial-popup {
-    position: absolute;
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    border: 3px solid #00ff88;
-    border-radius: 15px;
-    padding: 20px;
-    min-width: 250px;
-    max-width: 300px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+/* Персонаж */
+.guide-character {
+    position: fixed;
     z-index: 10001;
+    bottom: 100px;
+    left: 20px;
+    transition: all 1s ease;
+}
+
+.character-body {
+    background: linear-gradient(45deg, #ff0080, #ff00ff);
+    border-radius: 50px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3);
+    animation: bounce 2s infinite;
+}
+
+.character-face {
+    font-size: 40px;
     animation: float 3s ease-in-out infinite;
 }
 
-.tutorial-popup h3 {
-    color: #00ff88;
-    margin-bottom: 10px;
+.character-name {
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Облачко речи */
+.character-speech {
+    position: absolute;
+    bottom: 120px;
+    left: 0;
+    background: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 300px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.5s ease;
+}
+
+.character-speech::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 30px;
+    border-width: 15px 15px 0;
+    border-style: solid;
+    border-color: white transparent transparent;
+}
+
+/* Подсветка элемента */
+.guide-highlight {
+    position: absolute;
+    border: 4px solid #00ff88;
+    border-radius: 20px;
+    background: rgba(0, 255, 136, 0.1);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
+                0 0 30px rgba(0, 255, 136, 0.5);
+    z-index: 10000;
+    animation: pulse 2s infinite;
+    pointer-events: none;
+}
+
+/* Кнопки управления */
+.guide-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 10002;
+}
+
+.guide-btn {
+    padding: 15px 25px;
+    border-radius: 15px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.tutorial-popup p {
-    color: #aaa;
-    font-size: 14px;
-    line-height: 1.4;
-    margin-bottom: 15px;
-}
-
-.tutorial-next-btn {
-    background: linear-gradient(45deg, #ff0080, #ff00ff);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
     transition: all 0.3s;
 }
 
-.tutorial-next-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 0, 128, 0.3);
+.guide-btn.next-btn {
+    background: linear-gradient(45deg, #00ff88, #008055);
+    color: white;
 }
 
-/* Анимация */
+.guide-btn.skip-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid #ff0080;
+}
+
+.guide-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Анимации */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
 @keyframes float {
-    0%, 100% { transform: translate(-50%, 0); }
-    50% { transform: translate(-50%, -10px); }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-5px) rotate(5deg); }
+    66% { transform: translateY(5px) rotate(-5deg); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { border-color: #00ff88; }
+    50% { border-color: #ff0080; }
 }
 
 /* Адаптивность */
 @media (max-width: 480px) {
-    .tutorial-popup {
-        min-width: 200px;
+    .guide-character {
+        left: 10px;
+        bottom: 80px;
+    }
+    
+    .character-body {
+        padding: 10px 15px;
+    }
+    
+    .character-face {
+        font-size: 30px;
+    }
+    
+    .character-name {
+        font-size: 14px;
+    }
+    
+    .character-speech {
         max-width: 250px;
         padding: 15px;
+        font-size: 14px;
     }
     
-    .right-arrow .arrow-line {
-        width: 40px;
+    .guide-controls {
+        bottom: 10px;
+        right: 10px;
+        flex-direction: column;
+        align-items: flex-end;
     }
     
-    .tutorial-popup {
-        right: -180px !important;
+    .guide-btn {
+        padding: 12px 20px;
+        font-size: 14px;
     }
 }
