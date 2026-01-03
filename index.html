@@ -263,115 +263,69 @@
 
     <!-- УВЕДОМЛЕНИЕ -->
     <div class="notification" id="notification"></div>
-    <!-- ОБУЧАЛКА -->
-<div id="tutorial-modal" class="modal active">
-    <div class="modal-content tutorial-content">
-        <div class="tutorial-slide active" id="slide-1">
-            <div class="tutorial-icon">🎮</div>
-            <h2 class="tutorial-title">Добро пожаловать в Brainrot Stealer!</h2>
-            <p class="tutorial-text">Готов стать мастером кражи самых редких Brainrot-карт?</p>
-            <div class="tutorial-buttons">
-                <button class="tutorial-btn next-btn" onclick="nextSlide()">Начать обучение</button>
-                <button class="tutorial-btn skip-btn" onclick="skipTutorial()">Пропустить</button>
-            </div>
-            <div class="tutorial-progress">
-                <div class="progress-dot active"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-            </div>
+<!-- ИНТЕРАКТИВНАЯ ОБУЧАЛКА -->
+<div id="interactive-tutorial" style="display: none;">
+    <!-- ШАГ 1: Кнопка кражи -->
+    <div class="tutorial-step" id="step-1" style="display: none;">
+        <div class="tutorial-arrow top-arrow" style="top: -60px; left: 50%; transform: translateX(-50%);">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
         </div>
-
-        <div class="tutorial-slide" id="slide-2">
-            <div class="tutorial-icon">🎴</div>
-            <h2 class="tutorial-title">Кража карт</h2>
-            <p class="tutorial-text">Нажимай кнопку <strong>"УКРАСТЬ КАРТУ"</strong> чтобы попытаться украсть карту. Каждая кража стоит энергии!</p>
-            <div class="tutorial-highlight" id="highlight-steal-btn"></div>
-            <div class="tutorial-buttons">
-                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
-                <button class="tutorial-btn next-btn" onclick="nextSlide()">Далее</button>
-            </div>
-            <div class="tutorial-progress">
-                <div class="progress-dot"></div>
-                <div class="progress-dot active"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-            </div>
-        </div>
-
-        <div class="tutorial-slide" id="slide-3">
-            <div class="tutorial-icon">⚡</div>
-            <h2 class="tutorial-title">Энергия и статистика</h2>
-            <p class="tutorial-text">Следи за энергией - она восстанавливается со временем. Вся статистика в правом верхнем углу!</p>
-            <div class="tutorial-highlight" id="highlight-stats-btn"></div>
-            <div class="tutorial-buttons">
-                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
-                <button class="tutorial-btn next-btn" onclick="nextSlide()">Далее</button>
-            </div>
-            <div class="tutorial-progress">
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot active"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-            </div>
-        </div>
-
-        <div class="tutorial-slide" id="slide-4">
-            <div class="tutorial-icon">🛒</div>
-            <h2 class="tutorial-title">Магазин и Казино</h2>
-            <p class="tutorial-text">Зарабатывай голду и трать её в магазине или рискуй в казино для больших выигрышей!</p>
-            <div class="tutorial-features">
-                <div class="feature-item">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Магазин</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-dice"></i>
-                    <span>Казино</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-layer-group"></i>
-                    <span>Коллекция</span>
-                </div>
-            </div>
-            <div class="tutorial-buttons">
-                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
-                <button class="tutorial-btn next-btn" onclick="nextSlide()">Далее</button>
-            </div>
-            <div class="tutorial-progress">
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot active"></div>
-                <div class="progress-dot"></div>
-            </div>
-        </div>
-
-        <div class="tutorial-slide" id="slide-5">
-            <div class="tutorial-icon">🏆</div>
-            <h2 class="tutorial-title">Готов к игре!</h2>
-            <p class="tutorial-text">Собирай полную коллекцию, повышай рейтинг и стань легендой Brainrot вселенной!</p>
-            <div class="tutorial-tips">
-                <div class="tip">🎯 Кради карты каждый день</div>
-                <div class="tip">💰 Зарабатывай голду в казино</div>
-                <div class="tip">📈 Собирай все карты</div>
-            </div>
-            <div class="tutorial-buttons">
-                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
-                <button class="tutorial-btn start-btn" onclick="startGame()">Начать игру!</button>
-            </div>
-            <div class="tutorial-progress">
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot active"></div>
-            </div>
+        <div class="tutorial-popup" style="top: -130px; left: 50%; transform: translateX(-50%);">
+            <h3><i class="fas fa-hand-sparkles"></i> Кража карт</h3>
+            <p>Нажми эту кнопку, чтобы попытаться украсть карту!</p>
+            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Далее →</button>
         </div>
     </div>
+
+    <!-- ШАГ 2: Статистика -->
+    <div class="tutorial-step" id="step-2" style="display: none;">
+        <div class="tutorial-arrow right-arrow" style="top: 50%; right: -80px;">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
+        </div>
+        <div class="tutorial-popup" style="top: 50%; right: -250px; transform: translateY(-50%);">
+            <h3><i class="fas fa-chart-bar"></i> Статистика</h3>
+            <p>Нажми сюда, чтобы посмотреть свою статистику и прогресс</p>
+            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Далее →</button>
+        </div>
+    </div>
+
+    <!-- ШАГ 3: Нижнее меню -->
+    <div class="tutorial-step" id="step-3" style="display: none;">
+        <div class="tutorial-arrow top-arrow" style="bottom: 80px; left: 50%; transform: translateX(-50%);">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
+        </div>
+        <div class="tutorial-popup" style="bottom: 160px; left: 50%; transform: translateX(-50%);">
+            <h3><i class="fas fa-compass"></i> Навигация</h3>
+            <p>Используй нижнее меню для перехода между разделами</p>
+            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Далее →</button>
+        </div>
+    </div>
+
+    <!-- ШАГ 4: Быстрые действия -->
+    <div class="tutorial-step" id="step-4" style="display: none;">
+        <div class="tutorial-arrow bottom-arrow" style="top: 100px; left: 50%; transform: translateX(-50%);">
+            <div class="arrow-line"></div>
+            <div class="arrow-head"></div>
+        </div>
+        <div class="tutorial-popup" style="top: 180px; left: 50%; transform: translateX(-50%);">
+            <h3><i class="fas fa-bolt"></i> Быстрые действия</h3>
+            <p>Здесь ты найдешь магазин, казино и другие функции</p>
+            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Завершить</button>
+        </div>
+    </div>
+
+    <!-- Затемнение фона -->
+    <div class="tutorial-overlay"></div>
+</div>
+
+<!-- Кнопка повторения обучалки -->
+<div id="tutorial-redo-btn" style="display: none; position: fixed; top: 70px; right: 15px; z-index: 999;">
+    <button onclick="startInteractiveTutorial()" style="background: rgba(0, 255, 136, 0.2); border: 2px solid #00ff88; color: #00ff88; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <i class="fas fa-question"></i>
+    </button>
 </div>
 </body>
 </html>
