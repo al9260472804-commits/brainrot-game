@@ -263,5 +263,115 @@
 
     <!-- УВЕДОМЛЕНИЕ -->
     <div class="notification" id="notification"></div>
+    <!-- ОБУЧАЛКА -->
+<div id="tutorial-modal" class="modal active">
+    <div class="modal-content tutorial-content">
+        <div class="tutorial-slide active" id="slide-1">
+            <div class="tutorial-icon">🎮</div>
+            <h2 class="tutorial-title">Добро пожаловать в Brainrot Stealer!</h2>
+            <p class="tutorial-text">Готов стать мастером кражи самых редких Brainrot-карт?</p>
+            <div class="tutorial-buttons">
+                <button class="tutorial-btn next-btn" onclick="nextSlide()">Начать обучение</button>
+                <button class="tutorial-btn skip-btn" onclick="skipTutorial()">Пропустить</button>
+            </div>
+            <div class="tutorial-progress">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+        </div>
+
+        <div class="tutorial-slide" id="slide-2">
+            <div class="tutorial-icon">🎴</div>
+            <h2 class="tutorial-title">Кража карт</h2>
+            <p class="tutorial-text">Нажимай кнопку <strong>"УКРАСТЬ КАРТУ"</strong> чтобы попытаться украсть карту. Каждая кража стоит энергии!</p>
+            <div class="tutorial-highlight" id="highlight-steal-btn"></div>
+            <div class="tutorial-buttons">
+                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
+                <button class="tutorial-btn next-btn" onclick="nextSlide()">Далее</button>
+            </div>
+            <div class="tutorial-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+        </div>
+
+        <div class="tutorial-slide" id="slide-3">
+            <div class="tutorial-icon">⚡</div>
+            <h2 class="tutorial-title">Энергия и статистика</h2>
+            <p class="tutorial-text">Следи за энергией - она восстанавливается со временем. Вся статистика в правом верхнем углу!</p>
+            <div class="tutorial-highlight" id="highlight-stats-btn"></div>
+            <div class="tutorial-buttons">
+                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
+                <button class="tutorial-btn next-btn" onclick="nextSlide()">Далее</button>
+            </div>
+            <div class="tutorial-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+        </div>
+
+        <div class="tutorial-slide" id="slide-4">
+            <div class="tutorial-icon">🛒</div>
+            <h2 class="tutorial-title">Магазин и Казино</h2>
+            <p class="tutorial-text">Зарабатывай голду и трать её в магазине или рискуй в казино для больших выигрышей!</p>
+            <div class="tutorial-features">
+                <div class="feature-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Магазин</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-dice"></i>
+                    <span>Казино</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Коллекция</span>
+                </div>
+            </div>
+            <div class="tutorial-buttons">
+                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
+                <button class="tutorial-btn next-btn" onclick="nextSlide()">Далее</button>
+            </div>
+            <div class="tutorial-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+            </div>
+        </div>
+
+        <div class="tutorial-slide" id="slide-5">
+            <div class="tutorial-icon">🏆</div>
+            <h2 class="tutorial-title">Готов к игре!</h2>
+            <p class="tutorial-text">Собирай полную коллекцию, повышай рейтинг и стань легендой Brainrot вселенной!</p>
+            <div class="tutorial-tips">
+                <div class="tip">🎯 Кради карты каждый день</div>
+                <div class="tip">💰 Зарабатывай голду в казино</div>
+                <div class="tip">📈 Собирай все карты</div>
+            </div>
+            <div class="tutorial-buttons">
+                <button class="tutorial-btn prev-btn" onclick="prevSlide()">Назад</button>
+                <button class="tutorial-btn start-btn" onclick="startGame()">Начать игру!</button>
+            </div>
+            <div class="tutorial-progress">
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot active"></div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
