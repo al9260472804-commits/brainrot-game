@@ -263,69 +263,34 @@
 
     <!-- УВЕДОМЛЕНИЕ -->
     <div class="notification" id="notification"></div>
-<!-- ИНТЕРАКТИВНАЯ ОБУЧАЛКА -->
-<div id="interactive-tutorial" style="display: none;">
-    <!-- ШАГ 1: Кнопка кражи -->
-    <div class="tutorial-step" id="step-1" style="display: none;">
-        <div class="tutorial-arrow top-arrow" style="top: -60px; left: 50%; transform: translateX(-50%);">
-            <div class="arrow-line"></div>
-            <div class="arrow-head"></div>
+<!-- ПЕРСОНАЖ-ГИД -->
+<div id="tutorial-guide" class="modal active" style="display: none;">
+    <div class="guide-overlay"></div>
+    
+    <!-- Персонаж -->
+    <div class="guide-character" id="guide-character">
+        <div class="character-body">
+            <div class="character-face">😎</div>
+            <div class="character-name">Skibidi Guide</div>
         </div>
-        <div class="tutorial-popup" style="top: -130px; left: 50%; transform: translateX(-50%);">
-            <h3><i class="fas fa-hand-sparkles"></i> Кража карт</h3>
-            <p>Нажми эту кнопку, чтобы попытаться украсть карту!</p>
-            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Далее →</button>
-        </div>
-    </div>
-
-    <!-- ШАГ 2: Статистика -->
-    <div class="tutorial-step" id="step-2" style="display: none;">
-        <div class="tutorial-arrow right-arrow" style="top: 50%; right: -80px;">
-            <div class="arrow-line"></div>
-            <div class="arrow-head"></div>
-        </div>
-        <div class="tutorial-popup" style="top: 50%; right: -250px; transform: translateY(-50%);">
-            <h3><i class="fas fa-chart-bar"></i> Статистика</h3>
-            <p>Нажми сюда, чтобы посмотреть свою статистику и прогресс</p>
-            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Далее →</button>
+        <div class="character-speech" id="guide-speech">
+            Привет! Я помогу тебе разобраться с игрой!
+            <div class="speech-arrow"></div>
         </div>
     </div>
-
-    <!-- ШАГ 3: Нижнее меню -->
-    <div class="tutorial-step" id="step-3" style="display: none;">
-        <div class="tutorial-arrow top-arrow" style="bottom: 80px; left: 50%; transform: translateX(-50%);">
-            <div class="arrow-line"></div>
-            <div class="arrow-head"></div>
-        </div>
-        <div class="tutorial-popup" style="bottom: 160px; left: 50%; transform: translateX(-50%);">
-            <h3><i class="fas fa-compass"></i> Навигация</h3>
-            <p>Используй нижнее меню для перехода между разделами</p>
-            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Далее →</button>
-        </div>
+    
+    <!-- Выделение элемента -->
+    <div class="guide-highlight" id="guide-highlight"></div>
+    
+    <!-- Кнопки управления -->
+    <div class="guide-controls">
+        <button class="guide-btn skip-btn" onclick="skipGuide()">
+            <i class="fas fa-forward"></i> Пропустить
+        </button>
+        <button class="guide-btn next-btn" onclick="nextGuideStep()">
+            Далее <i class="fas fa-arrow-right"></i>
+        </button>
     </div>
-
-    <!-- ШАГ 4: Быстрые действия -->
-    <div class="tutorial-step" id="step-4" style="display: none;">
-        <div class="tutorial-arrow bottom-arrow" style="top: 100px; left: 50%; transform: translateX(-50%);">
-            <div class="arrow-line"></div>
-            <div class="arrow-head"></div>
-        </div>
-        <div class="tutorial-popup" style="top: 180px; left: 50%; transform: translateX(-50%);">
-            <h3><i class="fas fa-bolt"></i> Быстрые действия</h3>
-            <p>Здесь ты найдешь магазин, казино и другие функции</p>
-            <button class="tutorial-next-btn" onclick="nextTutorialStep()">Завершить</button>
-        </div>
-    </div>
-
-    <!-- Затемнение фона -->
-    <div class="tutorial-overlay"></div>
-</div>
-
-<!-- Кнопка повторения обучалки -->
-<div id="tutorial-redo-btn" style="display: none; position: fixed; top: 70px; right: 15px; z-index: 999;">
-    <button onclick="startInteractiveTutorial()" style="background: rgba(0, 255, 136, 0.2); border: 2px solid #00ff88; color: #00ff88; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-        <i class="fas fa-question"></i>
-    </button>
 </div>
 </body>
 </html>
